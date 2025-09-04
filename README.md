@@ -1,12 +1,12 @@
 # Kubernetes Cluster Demo
-This is a collection of K3s demos by Kendell Crocker. The goal is to create short, reporoducible demos that teach and deomonstrate core Kubernetes skills.
+This is a collection of K3s demos by Kendell Crocker. The goal is to create short, reproducible demos that teach and demonstrate core Kubernetes skills.
 Since this is an ongoing lab project of mine, I will continue to add demo labs to this repo over time.
 
 ## Initial Setup
 A one-time base configuration for each node in the cluster.
 
 Includes:
-- Basic setup for nodes (Members and Control Plane) 
+- Basic setup for nodes (Workers and Control Plane) 
 - Connection Validation Steps
 - Any other quirks and oddities I ran into
 
@@ -15,7 +15,7 @@ Includes:
 
 ## Demos
 
-After completeting the Initial Setup, pick any of the following demos.
+After completing the Initial Setup, pick any of the following demos.
 
 *Note - Each demo is designed to be run independently; You do not have to complete all of them, or any of them in a specific order.*
 

@@ -1,18 +1,18 @@
-# Initial-Setup
+# Initial Setup
 
 One-time preparation to make your nodes ready for any demo in this repo.
 
->### *Author's notes*:
->You do not have to use Raspberry Pis to follow this lab. I'm using this hardware because it's what I had available to me. I've documented the hoops I had to jump through, but any Linux node that supports K3s will work just fine.
-To that end, I've tried to keep the K3s setup instructions as hardware-neutral as possible. The Pi-specific bits are only for those who need it.
+> **Author’s notes:**  
+> You do not have to use Raspberry Pis to follow this lab. I’m using Pi 5s (plus a 3B+) because I had them on hand. I’ve documented the hoops I jumped through, but any Linux nodes that support K3s will work.  
+> I’ve kept the K3s setup as hardware-neutral as possible; Pi-specific bits are here mainly for reference.  
+> I used Ubuntu Server 25.04, so commands use Debian/Ubuntu syntax. Any Linux distro that supports K3s will work—adjust commands as needed.
 
->Also note that I've chosen to use Ubuntu 25.04 as my Linux distro. Therefore all my commands will be in the Debian/Ubuntu syntax. Again, any K3s supporting Linux distro will work, but you may need to modify the commands for your setup specifically.
 
 ## Requirements
 
-- 64‑bit Ubuntu Server 25.04+ (Or your favorite Linux distro)
-- SSH or Terminal access on each node
-- Recommend use of a single LAN/Subnet for all nodes
+- 64-bit Ubuntu Server 25.04+ (or your favorite Linux distro)
+- SSH or terminal access on each node
+- I recommend using a single LAN/subnet for all nodes
 
 ## My Hardware and Roles
 
@@ -26,8 +26,6 @@ My lab setup will include three nodes:
 
 ## Raspberry Pi Specific Setup
 
->*Note - All commands are in Debian/ubuntu syntax*
-
 ### On Each Node:
 
 1. Update! (Standard first step to any installation on Linux)
@@ -35,17 +33,36 @@ My lab setup will include three nodes:
 sudo apt update -y
 ```
 
-2. Regardless of Linux Distrobution, Kubernetes on `aarch64` requires that the cgroups flags be set:
+2. Regardless of Linux Distribution, Kubernetes on `aarch64` requires that the cgroups flags be set:
 ```bash
 sudo sed -i '1 s/$/ cgroup_memory=1 cgroup_enable=memory cgroup_enable=cpuset/' /boot/firmware/cmdline.txt
 ```
 
-3. Reboot Node:
+3. Since we are on a Raspberry Pi and running on flash memory, we will disable the memory swap feature:
+```bash
+sudo swapoff -a
+sudo sed -ri '/\sswap\s/s/^/#/' /etc/fstab
+```
+
+4. Optional - Enable bridge netfilter. These are recommended setttings for Kubernetes.
+```bash
+# Enabled br_netfilter at boot
+sudo bash -c 'echo br_netfilter >/etc/modules-load.d/k8s.conf'
+
+# Enable persistent bridging that survives reboots
+sudo bash -c 'cat >/etc/sysctl.d/99-k8s.conf <<EOF
+net.ipv4.ip_forward=1
+net.bridge.bridge-nf-call-iptables=1
+net.bridge.bridge-nf-call-ip6tables=1
+EOF'
+```
+
+4. Reboot Node:
 ```bash
 sudo reboot
 ```
 
-4. Verify that flags are present:
+5. Verify that cgroup flags are present:
 ```bash
 cat /proc/cmdline | tr ' ' '\n' | grep -E 'cgroup_memory=1|cgroup_enable=memory|cgroup_enable=cpuset'
 
@@ -53,6 +70,25 @@ cat /proc/cmdline | tr ' ' '\n' | grep -E 'cgroup_memory=1|cgroup_enable=memory|
 cgroup_memory=1
 cgroup_enable=memory
 cgroup_enable=cpuset
+```
+
+6. Verify that memory swap is disabled
+```bash
+# Should return nothing
+swapon --show
+
+# Should return a bunch of zeros
+free -h | awk '/Swap:/ {print}'
+```
+
+7. Verify that bridge netfilter is enabled
+```bash
+lsmod | grep br_netfilter
+
+# Each of these should return a value of 1
+sysctl net.ipv4.ip_forward
+sysctl net.bridge.bridge-nf-call-iptables
+sysctl net.bridge.bridge-nf-call-ip6tables
 ```
 
 ## Installing K3s
