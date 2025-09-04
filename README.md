@@ -10,7 +10,7 @@ Includes:
 - Connection Validation Steps
 - Any other quirks and oddities I ran into
 
-**Click here to get started**: [./initial-setup/inital-setup.md](./initial-setup/initial-setup.md)
+[**Click here to go to the Initial Setup Guide**](./initial-setup/initial-setup.md)
 
 
 ## Demos

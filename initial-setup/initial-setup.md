@@ -60,14 +60,14 @@ cgroup_enable=cpuset
 ### Control Nodes:
 #### 1. Primary Control Node (`rd-rp51`)
 
-1. Install K3s server (initialize the cluster)
+1. Install K3s server. (initialize the cluster) Replace `<NODE-NAME>` with the name of the primary node. (In my case, its `rd-rp51`)
 ```bash
 curl -sfL https://get.k3s.io | \
   INSTALL_K3S_CHANNEL=stable \
   sh -s - server \
   --cluster-init \
-  --node-name rd-rp51 \     # <-- Or your Primary Node Hostname
-  --tls-san rd-rp51 \       # <-- Or your Primary Node Hostname
+  --node-name <NODE-NAME> \
+  --tls-san <NODE-NAME> \
   --tls-san $(hostname -I | awk '{print $1}')
 ```
 
@@ -94,14 +94,14 @@ hostname -I | awk '{print $1}'
 
 #### 2. Secondary Control Node (`rd-rp52`)
 
-1. Replace `<TOKEN>` and `<ADDRESS>` with the value from Primary Node.
+1. Replace `<TOKEN>` and `<ADDRESS>` with the value from Primary Node. Also `<NODE-NAME>` is the name of this node. (In my case, its `rd-rp52`)
 ```bash
 curl -sfL https://get.k3s.io | \
   INSTALL_K3S_CHANNEL=stable \
-  K3S_URL=https://<ADDRESS>:6443 \  # <-- Replace with Address of Primary Node
-  K3S_TOKEN=<TOKEN> \               # <-- Replace with Token from Primary Node
+  K3S_URL=https://<ADDRESS>:6443 \
+  K3S_TOKEN=<TOKEN> \
   sh -s - server \
-  --node-name rd-rp52               # <-- Or your Secondary Node Hostname
+  --node-name <NODE-NAME>
 ```
 
 2. Verify that Node has connected to cluster:
@@ -112,14 +112,14 @@ sudo kubectl get nodes
 
 #### 3. Worker/Agent Node (`rd-rp31`)
 
-1. Replace `<TOKEN>` and `<ADDRESS>` with the value from Primary Node.
+1. Replace `<TOKEN>` and `<ADDRESS>` with the value from Primary Node. Also `<NODE-NAME>` is the name of this node. (In my case, its `rd-rp31`)
 ```bash
 curl -sfL https://get.k3s.io | \
   INSTALL_K3S_CHANNEL=stable \
-  K3S_URL=https://<ADDRESS>:6443 \  # <-- Replace with Address of Primary Node
-  K3S_TOKEN=<TOKEN> \               # <-- Replace with Token from Primary Node
+  K3S_URL=https://<ADDRESS>:6443 \
+  K3S_TOKEN=<TOKEN> \
   sh -s - agent \
-  --node-name rd-rp31               # <-- Or your Secondary Node Hostname
+  --node-name <NODE-NAME>
 ```
 
 2. Verify that Node has connected to cluster:
@@ -128,3 +128,19 @@ sudo kubectl get nodes
 ```
 >*Node may take a few seconds to appear on the list*
 
+## Conclusion
+
+At this point, you should have a working K3s cluster operating on your nodes. You can verify by going to any node and running:
+```bash
+sudo kubectl get nodes
+
+# Example Output from my setup:
+NAME      STATUS   ROLES                       AGE    VERSION
+rd-rp31   Ready    <none>                      5m   v1.33.4+k3s1
+rd-rp51   Ready    control-plane,etcd,master   12m   v1.33.4+k3s1
+rd-rp52   Ready    control-plane,etcd,master   15m   v1.33.4+k3s1
+```
+
+If you see all your nodes, congratulations! You have setup your cluster. You can now return to the demos and run one.
+
+[**Click here to go to the Demos**](../README.md#demos)
