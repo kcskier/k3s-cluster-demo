@@ -93,8 +93,7 @@ sysctl net.bridge.bridge-nf-call-ip6tables
 
 ## Installing K3s
 
-### Control Nodes:
-#### 1. Primary Control Node (`rd-rp51`)
+### 1. Primary Control Node (`rd-rp51`)
 
 1. Install K3s server. (initialize the cluster) Replace `<NODE-NAME>` with the name of the primary node. (In my case, its `rd-rp51`)
 ```bash
@@ -128,7 +127,9 @@ sudo cat /var/lib/rancher/k3s/server/node-token
 hostname -I | awk '{print $1}'
 ```
 
-#### 2. Secondary Control Node (`rd-rp52`)
+### 2. Secondary Control Node (`rd-rp52`)
+
+>*It is worth mentioning that control planes require strict quorum. If this was a production environment, I would recommend setting up two agent nodes rather than two control plane nodes.*
 
 1. Replace `<TOKEN>` and `<ADDRESS>` with the value from Primary Node. Also `<NODE-NAME>` is the name of this node. (In my case, its `rd-rp52`)
 ```bash
@@ -146,7 +147,7 @@ sudo kubectl get nodes
 ```
 >*Node may take a few seconds to appear on the list*
 
-#### 3. Worker/Agent Node (`rd-rp31`)
+### 3. Worker/Agent Node (`rd-rp31`)
 
 1. Replace `<TOKEN>` and `<ADDRESS>` with the value from Primary Node. Also `<NODE-NAME>` is the name of this node. (In my case, its `rd-rp31`)
 ```bash
