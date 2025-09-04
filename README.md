@@ -1,22 +1,24 @@
 # Kubernetes Cluster Demo
+This is a collection of K3s demos by Kendell Crocker. The goal is to create short, reporoducible demos that teach and deomonstrate core Kubernetes skills.
+Since this is an ongoing lab project of mine, I will continue to add demo labs to this repo over time.
 
-A lightweight multi-node Kubernetes lab running on **Raspberry Pi 5/3 (Alpine Linux)** with **k3s** and **Tailscale** networking.  
-This project demonstrates core Kubernetes concepts on constrained ARM hardware and serves as a portfolio example.
+## Initial Setup
+A one-time base configuration for each node in the cluster.
 
----
+Includes:
+- Basic setup for nodes (Members and Control Plane) 
+- Connection Validation Steps
+- Any other quirks and oddities I ran into
 
-## 🚀 Features
+**Click here to get started**: [./initial-setup/inital-setup.md](./initial-setup/initial-setup.md)
 
-- Multi-node **k3s cluster** (control-plane + workers)
-- Remote access via **Tailscale** (coyote node owns host network)
-- Deployment of a sample **FastAPI** app with:
-  - Readiness probes
-  - Service + Ingress (Traefik)
-  - Horizontal Pod Autoscaler (HPA)
-- Python verification script (`verify/verify_lab.py`) checks cluster health and app reachability
-- Organized repo structure for clarity (manifests, scripts, docs)
 
----
+## Demos
 
-## 📂 Repo Layout
+After completeting the Initial Setup, pick any of the following demos.
 
+*Note - Each demo is designed to be run independently; You do not have to complete all of them, or any of them in a specific order.*
+
+- **Demo 1 - Basic Pod, Deployment, and Service**: Kubernetes fundamentals. Setup a Pod, Deployment and Service using the official Nginx image.
+
+- **Demo 2 - Cluster Management**:
