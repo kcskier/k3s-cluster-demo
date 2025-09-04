@@ -172,10 +172,10 @@ At this point, you should have a working K3s cluster operating on your nodes. Yo
 sudo kubectl get nodes
 
 # Example Output from my setup:
-NAME      STATUS   ROLES                       AGE    VERSION
-rd-rp31   Ready    <none>                      5m   v1.33.4+k3s1
-rd-rp51   Ready    control-plane,etcd,master   12m   v1.33.4+k3s1
-rd-rp52   Ready    control-plane,etcd,master   15m   v1.33.4+k3s1
+NAME      STATUS   ROLES                       AGE   VERSION
+rd-rp31   Ready    <none>                      2m   v1.33.4+k3s1
+rd-rp51   Ready    control-plane,etcd,master   15m   v1.33.4+k3s1
+rd-rp52   Ready    control-plane,etcd,master   13m   v1.33.4+k3s1
 ```
 
 If you see all your nodes, congratulations! You have setup your cluster. You can now return to the demos and run one.
