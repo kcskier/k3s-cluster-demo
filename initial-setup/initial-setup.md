@@ -46,7 +46,7 @@ sudo sed -ri '/\sswap\s/s/^/#/' /etc/fstab
 
 4. Optional - Enable bridge netfilter. These are recommended setttings for Kubernetes.
 ```bash
-# Enabled br_netfilter at boot
+# Enable br_netfilter at boot
 sudo bash -c 'echo br_netfilter >/etc/modules-load.d/k8s.conf'
 
 # Enable persistent bridging that survives reboots
@@ -57,12 +57,12 @@ net.bridge.bridge-nf-call-ip6tables=1
 EOF'
 ```
 
-4. Reboot Node:
+5. Reboot Node:
 ```bash
 sudo reboot
 ```
 
-5. Verify that cgroup flags are present:
+6. Verify that cgroup flags are present:
 ```bash
 cat /proc/cmdline | tr ' ' '\n' | grep -E 'cgroup_memory=1|cgroup_enable=memory|cgroup_enable=cpuset'
 
@@ -72,7 +72,7 @@ cgroup_enable=memory
 cgroup_enable=cpuset
 ```
 
-6. Verify that memory swap is disabled
+7. Verify that memory swap is disabled
 ```bash
 # Should return nothing
 swapon --show
@@ -81,7 +81,7 @@ swapon --show
 free -h | awk '/Swap:/ {print}'
 ```
 
-7. Verify that bridge netfilter is enabled
+8. Verify that bridge netfilter is enabled
 ```bash
 lsmod | grep br_netfilter
 

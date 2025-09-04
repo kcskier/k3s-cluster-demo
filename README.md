@@ -19,6 +19,6 @@ After completing the Initial Setup, pick any of the following demos.
 
 *Note - Each demo is designed to be run independently; You do not have to complete all of them, or any of them in a specific order.*
 
-- **Demo 1 - Basic Pod, Deployment, and Service**: Kubernetes fundamentals. Setup a Pod, Deployment and Service using the official Nginx image.
+- **Demo 1 - Basic Pod, Deployment, and Service**: Kubernetes fundamentals. Set up a Pod, Deployment and Service using the official Nginx image.
 
 - **Demo 2 - Cluster Management**:
