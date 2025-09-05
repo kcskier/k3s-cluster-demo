@@ -1,7 +1,5 @@
 # Demo 1 - The Basics (Pods, Deployments, Services)
 
-One-time preparation to make your nodes ready for any demo in this repo.
-
 > **Author’s notes:**  
 >- I’ve kept the K3s setup as hardware-neutral as possible; Any Pi-specific bits are here mainly for reference.
 >- I used Ubuntu Server 25.04, so commands use Debian/Ubuntu syntax.
