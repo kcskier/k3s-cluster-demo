@@ -3,14 +3,14 @@
 One-time preparation to make your nodes ready for any demo in this repo.
 
 > **Author’s notes:**  
-> You do not have to use Raspberry Pis to follow this lab. I’m using Pi 5s (plus a 3B+) because I had them on hand. I’ve documented the hoops I jumped through, but any Linux nodes that support K3s will work.  
-> I’ve kept the K3s setup as hardware-neutral as possible; Pi-specific bits are here mainly for reference.  
-> I used Ubuntu Server 25.04, so commands use Debian/Ubuntu syntax. Any Linux distro that supports K3s will work—adjust commands as needed.
+>- You do not have to use Raspberry Pis to follow this lab. I’m using Pi 5s (plus a 3B+) because I had them on hand. I’ve documented the hoops I jumped through, but any Linux nodes that support K3s will work.  
+>- I’ve kept the K3s setup as hardware-neutral as possible; Pi-specific bits are here mainly for reference.  
+>- I used Ubuntu Server 25.04, so commands use Debian/Ubuntu syntax. Any Linux distro that supports K3s will work, so adjust commands as needed.
 
 
 ## Requirements
 
-- 64-bit Ubuntu Server 25.04+ (or your favorite Linux distro)
+- 64-bit Ubuntu Server 25.04+
 - SSH or terminal access on each node
 - I recommend using a single LAN/subnet for all nodes
 
