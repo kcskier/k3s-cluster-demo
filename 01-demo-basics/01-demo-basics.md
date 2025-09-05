@@ -1,4 +1,4 @@
-# Initial Setup
+# Demo 1 - The Basics (Pods, Deployments, Services)
 
 One-time preparation to make your nodes ready for any demo in this repo.
 
@@ -57,15 +57,6 @@ NAME    READY   STATUS    RESTARTS   AGE
 nginx   1/1     Running   0          2m15s
 ```
 
-4. The pod is running, but now we need to port forward it so we can access it.
-```bash
-sudo kubectl port-forward pod/nginx 8080:80 & curl http://localhost:8080
-```
-
-`curl` should return some HTML for you in your browser, which confirms that our Pod is running.
-
-5. Press `ctrl + c` to stop the port forward. The Pod will no longer be accessible.
-
 ### Cleanup the Pod
 
 1. Stop and delete the Nginx pod
@@ -84,9 +75,8 @@ No resources found in default namespace.
 ### Pod Summary
 
 If you hadn't picked up on it yet, there are some obvious issues with running a Pod like this:
-- The port forward was only done on `rd-rp51` and requires a command to be running in the terminal session. 
-- The port forward is only applying locally. In other words, only `rd-rp51` can reach this Pod.
-- And finally, if this Pod was to crash, it would have to be manually restarted.
+- This Pod is running, but there is no way to access it, since no ports are forwarded or mapped.
+- If this Pod was to crash, it would have to be manually restarted.
 
 This is where a deployment and a service will help us. We'll tackle each one separately, starting with a deployment.
 
@@ -133,7 +123,7 @@ ssh <USER>@<CONTROL-NODE-IP-ADDRESS>
 
 2. Pull the 01-simple_deployment Manifest from the Github Repo and apply it to the cluster
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/00-simple_deployment.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/01-simple_deployment.yaml
 ```
 
 3. Verify that the manifest was pulled, and that the Deployment has started.
@@ -285,7 +275,7 @@ spec:
   - port: 80        # Service Port (This is for internal cluster)
     targetPort: 80  # Port on the Pod to forward to
     nodePort: 30080 # External port on each Node
-  type: NodePort    # Instruction to expose port on each Node
+  type: NodePort    # Instruction to expose port on each Node to external LAN
 ```
 
 ### Run the Deployment with the Service
@@ -335,12 +325,24 @@ curl http://<ANY-NODES-IP-ADDRESS>:30080
 sudo kubectl delete deployment nginx
 ```
 
-2. Verify the Pods have been removed.
+2. Delete the Service
+```bash
+sudo kubectl delete service nginx
+```
+
+3. Verify the Pods have been removed.
 ```bash
 sudo kubectl get pods
 
 # Example return status
 No resources found in default namespace.
+```
+
+4. Verify the Service has been removed.
+```bash
+sudo kubectl get services | grep nginx
+
+# Should return nothing
 ```
 
 ## Conclusion
