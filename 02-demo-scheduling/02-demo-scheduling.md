@@ -135,9 +135,9 @@ No resources found in default namespace.
 
 3. Remove the labels from each Node.
 ```bash
-kubectl label node rd-rp51 hardware-
-kubectl label node rd-rp52 hardware-
-kubectl label node rd-rp31 hardware-
+sudo kubectl label node rd-rp51 hardware-
+sudo kubectl label node rd-rp52 hardware-
+sudo kubectl label node rd-rp31 hardware-
 ```
 
 ### Labels Summary
