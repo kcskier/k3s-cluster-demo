@@ -13,7 +13,6 @@ This demo teaches how Kubernetes decides where to place Pods, and how to control
 
 - **Complete** [**Initial Setup Guide**](../00-initial-setup/initial-setup.md)
 - Access to the terminal of the control node. I recommend using SSH.
-- A cluster with at least 2 worker nodes (Here: `rd-rp51`, `rd-rp52`, `rd-rp31`).
 
 ## 1 - Labelling Nodes
 
@@ -191,7 +190,7 @@ sudo kubectl delete deployment nginx
 
 ### Adding Tolerations
 
-Let's modify the Manifest to allow the Pods to tolerate a tainted node. Remember that we tainted `rd-rp51` with `dedicated=demo:NoSchedule`. Below we’ve added a toleration for that taint:
+Let's modify the Manifest to allow the Pods to tolerate a tainted node. Remember that we tainted `rd-rp52` with `dedicated=demo:NoSchedule`. Below we’ve added a toleration for that taint:
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -228,7 +227,7 @@ spec:
 sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/21-nodeSelector_with_taints.yaml
 ```
 
-5. Verify the Pods
+8. Verify the Pods
 ```bash
 sudo kubectl get pods -o wide
 
@@ -264,9 +263,9 @@ sudo kubectl taint nodes rd-rp52 dedicated=demo:NoSchedule-
 
 ## 4. Affinity and Anti-Affinity
 
-At this point, we've leared how to control where Kubernetes places Pods on Nodes using Labels and Taints, but there is a third way that provices much finer control.
+At this point, we've learned how to control where Kubernetes places Pods on Nodes using Labels and Taints, but there is a third way that provices much finer control.
 
-Affinity rules provide similar functionality, but give much finer control. For example, what if we want nodes to ***prefer*** the Pi5s, but not be completely barred from using the Pi3? Affinity would allow us to do this.
+Affinity rules provides similar functionality, but give much finer control. For example, what if we want nodes to ***prefer*** the Pi5s, but not be completely barred from using the Pi3? Affinity would allow us to do this.
 
 In this example, we've taken that same Nginx example from Demo 1, and we've modified it to use Affinity/Anti-Affinity:
 ```yaml
@@ -276,7 +275,7 @@ metadata:
   name: nginx
 # Deployment
 spec:
-  replicas: 5
+  replicas: 3
   selector:
     matchLabels:
       app: nginx
@@ -316,9 +315,9 @@ This new `affinity` section has two parts:
 
 > While these two sections seem to cancel each other out, Anti-Affinity will show how Affinity will prefer and spread the containers across all Nodes.
 
-1. Pull the 23-affinity_and_anti_affinity Manifest from the Github Repo and apply it to the cluster
+1. Pull the 22-affinity_and_anti_affinity Manifest from the Github Repo and apply it to the cluster
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/23-affinity_and_anti_affinity.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/22-affinity_and_anti_affinity.yaml
 ```
 
 2. Verify that the manifest was pulled, and that the pod has started
