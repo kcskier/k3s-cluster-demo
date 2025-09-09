@@ -133,6 +133,13 @@ sudo kubectl get pods
 No resources found in default namespace.
 ```
 
+3. Remove the labels from each Node.
+```bash
+kubectl label node rd-rp51 hardware-
+kubectl label node rd-rp52 hardware-
+kubectl label node rd-rp31 hardware-
+```
+
 ### Labels Summary
 
 This section showed how to use a nodeSelector to restrict scheduling to certain nodes. By deleting the Deployment now, we’ll have a clean slate for the next section (taints and tolerations).
