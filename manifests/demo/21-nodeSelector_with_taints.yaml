@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+# Deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    # Pod
+    spec:
+      nodeSelector:
+        hardware: "pi5"
+      # New Tolerations Section
+      tolerations:
+        - key: "dedicated"
+          operator: "Equal"
+          value: "demo"
+          effect: "NoSchedule"
+      containers:
+        - name: nginx
+          image: nginx:latest
+          ports:
+            - containerPort: 80

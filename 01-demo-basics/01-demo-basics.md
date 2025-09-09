@@ -43,7 +43,7 @@ ssh <USER>@<CONTROL-NODE-IP-ADDRESS>
 
 2. Pull the 00-simple_pod Manifest from the Github Repo and apply it to the cluster
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/00-simple_pod.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/10-simple_pod.yaml
 ```
 
 3. Verify that the manifest was pulled, and that the pod has started
@@ -121,7 +121,7 @@ ssh <USER>@<CONTROL-NODE-IP-ADDRESS>
 
 2. Pull the 01-simple_deployment Manifest from the Github Repo and apply it to the cluster
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/01-simple_deployment.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/11-simple_deployment.yaml
 ```
 
 3. Verify that the manifest was pulled, and that the Deployment has started.
@@ -286,7 +286,7 @@ ssh <USER>@<CONTROL-NODE-IP-ADDRESS>
 
 2. Pull the 02-simple_deployment_with_service Manifest from the Github Repo and apply it to the cluster
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/02-simple_deployment_with_service.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/12-simple_deployment_with_service.yaml
 ```
 
 3. Verify that the manifest was pulled, and that the Deployment has started.
