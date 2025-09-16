@@ -155,11 +155,14 @@ sudo kubectl delete deployment nginx
 
 #### 4. Verify that all was deleted from cluster
 ```bash
-sudo kubectl get pods
-sudo kubectl get ingress
-sudo kubectl get deployment
+sudo kubectl get pods &&
+sudo kubectl get ingress &&
+sudo kubectl get deployment &&
 sudo kubectl get service
+```
 
+Example Output:
+```bash
 # Example pods, ingress and deployment output
 No resources found in default namespace.
 
@@ -171,7 +174,10 @@ Remove the line you added to the `/etc/hosts` file
 
 ```bash
 sudo nano /etc/hosts
+```
 
+Example Output:
+```bash
 # Remove this line
 127.0.0.1   nginx.local
 ```
