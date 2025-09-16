@@ -28,23 +28,23 @@ My lab setup will include three nodes:
 
 ### On Each Node:
 
-1. Update! (Standard first step to any installation on Linux)
+#### 1. Update! (Standard first step to any installation on Linux)
 ```bash
 sudo apt update -y
 ```
 
-2. Regardless of Linux Distribution, Kubernetes on `aarch64` requires that the cgroups flags be set:
+#### 2. Regardless of Linux Distribution, Kubernetes on `aarch64` requires that the cgroups flags be set:
 ```bash
 sudo sed -i '1 s/$/ cgroup_memory=1 cgroup_enable=memory cgroup_enable=cpuset/' /boot/firmware/cmdline.txt
 ```
 
-3. Since we are on a Raspberry Pi and running on flash memory, we will disable the memory swap feature:
+#### 3. Since we are on a Raspberry Pi and running on flash memory, we will disable the memory swap feature:
 ```bash
 sudo swapoff -a
 sudo sed -ri '/\sswap\s/s/^/#/' /etc/fstab
 ```
 
-4. Optional - Enable bridge netfilter. These are recommended setttings for Kubernetes.
+#### 4. Optional - Enable bridge netfilter. These are recommended setttings for Kubernetes.
 ```bash
 # Enable br_netfilter at boot
 sudo bash -c 'echo br_netfilter >/etc/modules-load.d/k8s.conf'
@@ -57,12 +57,12 @@ net.bridge.bridge-nf-call-ip6tables=1
 EOF'
 ```
 
-5. Reboot Node:
+#### 5. Reboot Node:
 ```bash
 sudo reboot
 ```
 
-6. Verify that cgroup flags are present:
+#### 6. Verify that cgroup flags are present:
 ```bash
 cat /proc/cmdline | tr ' ' '\n' | grep -E 'cgroup_memory=1|cgroup_enable=memory|cgroup_enable=cpuset'
 
@@ -72,7 +72,7 @@ cgroup_enable=memory
 cgroup_enable=cpuset
 ```
 
-7. Verify that memory swap is disabled
+#### 7. Verify that memory swap is disabled
 ```bash
 # Should return nothing
 swapon --show
@@ -81,7 +81,7 @@ swapon --show
 free -h | awk '/Swap:/ {print}'
 ```
 
-8. Verify that bridge netfilter is enabled
+#### 8. Verify that bridge netfilter is enabled
 ```bash
 lsmod | grep br_netfilter
 
@@ -95,7 +95,7 @@ sysctl net.bridge.bridge-nf-call-ip6tables
 
 ### 1. Primary Control Node (`rd-rp51`)
 
-1. Install K3s server. (initialize the cluster) Replace `<NODE-NAME>` with the name of the primary node. (In my case, its `rd-rp51`)
+#### 1. Install K3s server. (initialize the cluster) Replace `<NODE-NAME>` with the name of the primary node. (In my case, its `rd-rp51`)
 ```bash
 curl -sfL https://get.k3s.io | \
   INSTALL_K3S_CHANNEL=stable \
@@ -106,23 +106,23 @@ curl -sfL https://get.k3s.io | \
   --tls-san $(hostname -I | awk '{print $1}')
 ```
 
-2. (optional) world-readable kubeconfig for convenience
+#### 2. (optional) world-readable kubeconfig for convenience
 ```bash
 sudo chmod 644 /etc/rancher/k3s/k3s.yaml
 ```
 >*Don't do this in a production environment. This is for a lab, so it's ok here.*
 
-3. Verify that node is running
+#### 3. Verify that node is running
 ```bash
 sudo kubectl get nodes
 ```
 
-4. Show the join token. You will need this to join the other nodes to the cluster.
+#### 4. Show the join token. You will need this to join the other nodes to the cluster.
 ```bash
 sudo cat /var/lib/rancher/k3s/server/node-token
 ```
 
-5. Show the IP address of the Control Node. You will also need this for joining other nodes.
+#### 5. Show the IP address of the Control Node. You will also need this for joining other nodes.
 ```bash
 hostname -I | awk '{print $1}'
 ```
@@ -131,7 +131,7 @@ hostname -I | awk '{print $1}'
 
 >*It is worth mentioning that control planes require strict quorum. If this was a production environment, I would recommend setting up two agent nodes rather than two control plane nodes.*
 
-1. Replace `<TOKEN>` and `<ADDRESS>` with the value from Primary Node. Also `<NODE-NAME>` is the name of this node. (In my case, its `rd-rp52`)
+#### 1. Replace `<TOKEN>` and `<ADDRESS>` with the value from Primary Node. Also `<NODE-NAME>` is the name of this node. (In my case, its `rd-rp52`)
 ```bash
 curl -sfL https://get.k3s.io | \
   INSTALL_K3S_CHANNEL=stable \
@@ -141,7 +141,7 @@ curl -sfL https://get.k3s.io | \
   --node-name <NODE-NAME>
 ```
 
-2. Verify that Node has connected to cluster:
+#### 2. Verify that Node has connected to cluster:
 ```bash
 sudo kubectl get nodes
 ```
@@ -149,7 +149,7 @@ sudo kubectl get nodes
 
 ### 3. Worker/Agent Node (`rd-rp31`)
 
-1. Replace `<TOKEN>` and `<ADDRESS>` with the value from Primary Node. Also `<NODE-NAME>` is the name of this node. (In my case, its `rd-rp31`)
+#### 1. Replace `<TOKEN>` and `<ADDRESS>` with the value from Primary Node. Also `<NODE-NAME>` is the name of this node. (In my case, its `rd-rp31`)
 ```bash
 curl -sfL https://get.k3s.io | \
   INSTALL_K3S_CHANNEL=stable \
@@ -159,7 +159,7 @@ curl -sfL https://get.k3s.io | \
   --node-name <NODE-NAME>
 ```
 
-2. Verify that Node has connected to cluster:
+#### 2. Verify that Node has connected to cluster:
 ```bash
 sudo kubectl get nodes
 ```

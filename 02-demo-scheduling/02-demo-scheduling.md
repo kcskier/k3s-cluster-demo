@@ -148,17 +148,17 @@ This section showed how to use a nodeSelector to restrict scheduling to certain 
 
 In the last two sections, we demonstrated how to use labels and nodeSelectors to invite Pods to specific nodes. We can also do the opposite, and tell Kubernetes where **not** to put Pods using taints.
 
-1. A common use case with K8s is to taint the control node(s). In our setup, we will use the following command to taint the `rd-rp51` node.
+#### 1. A common use case with K8s is to taint the control node(s). In our setup, we will use the following command to taint the `rd-rp51` node.
 ```bash
 sudo kubectl taint nodes rd-rp51 dedicated=control:NoSchedule
 ```
 
-2. For our demonstration, we will also taint the `rd-rp52` node.
+#### 2. For our demonstration, we will also taint the `rd-rp52` node.
 ```bash
 sudo kubectl taint nodes rd-rp52 dedicated=demo:NoSchedule
 ```
 
-3. Verify the taints applied using the following commands:
+#### 3. Verify the taints applied using the following commands:
 ```bash
 sudo kubectl describe node rd-rp51 | grep Taints
 sudo kubectl describe node rd-rp52 | grep Taints
@@ -172,12 +172,12 @@ Taints:             dedicated=demo:NoSchedule
 
 Tainting Nodes forces Pods to have to "opt-in" in order to be scheduled on a tainted node.
 
-4. Pull the 20-nodeSelector_with_labels Manifest from the Github Repo and apply it to the cluster
+#### 4. Pull the 20-nodeSelector_with_labels Manifest from the Github Repo and apply it to the cluster
 ```bash
 sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/20-nodeSelector_with_labels.yaml
 ```
 
-5. Verify the Pods
+#### 5. Verify the Pods
 ```bash
 sudo kubectl get pods
 
@@ -190,7 +190,7 @@ nginx-568d477586-fbhh4   0/1     Pending   0          12s
 
 Notice that all of the Pods have a status of `Pending`. This is because the Pi 5s are tainted and the Pods don’t tolerate those taints.
 
-6. Delete the Deployment
+#### 6. Delete the Deployment
 ```bash
 sudo kubectl delete deployment nginx
 ```
@@ -229,12 +229,12 @@ spec:
             - containerPort: 80
 ```
 
-7. Pull the 21-nodeSelector_with_taints Manifest from the Github Repo and apply it to the cluster:
+#### 7. Pull the 21-nodeSelector_with_taints Manifest from the Github Repo and apply it to the cluster:
 ```bash
 sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/21-nodeSelector_with_taints.yaml
 ```
 
-8. Verify the Pods
+#### 8. Verify the Pods
 ```bash
 sudo kubectl get pods -o wide
 
@@ -248,12 +248,12 @@ Now instead of the status of the Pods all saying `Pending`, we can see that each
 
 ### Cleanup the Deployment
 
-1. Delete the Deployment:
+#### 1. Delete the Deployment:
 ```bash
 sudo kubectl delete deployment nginx
 ```
 
-2. Remove the taints from the nodes so they return to normal:
+#### 2. Remove the taints from the nodes so they return to normal:
 ```bash
 # rd-rp51
 sudo kubectl taint nodes rd-rp51 dedicated=control:NoSchedule-
@@ -322,12 +322,12 @@ This new `affinity` section has two parts:
 
 > While these two sections seem to cancel each other out, Anti-Affinity will show how Affinity will prefer and spread the containers across all Nodes.
 
-1. Pull the 22-affinity_and_anti_affinity Manifest from the Github Repo and apply it to the cluster
+#### 1. Pull the 22-affinity_and_anti_affinity Manifest from the Github Repo and apply it to the cluster
 ```bash
 sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/22-affinity_and_anti_affinity.yaml
 ```
 
-2. Verify that the manifest was pulled, and that the pod has started
+#### 2. Verify that the manifest was pulled, and that the pod has started
 ```bash
 sudo kubectl get pods -o wide
 
@@ -342,12 +342,12 @@ As we can see, the Pods were applied to all the Nodes in the cluster because the
 
 ### Cleanup the Deployment
 
-1. Delete the Deployment
+#### 1. Delete the Deployment
 ```bash
 sudo kubectl delete deployment nginx
 ```
 
-2. Verify that the Pods have been removed
+#### 2. Verify that the Pods have been removed
 ```bash
 sudo kubectl get pods
 

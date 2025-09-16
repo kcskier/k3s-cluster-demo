@@ -278,18 +278,18 @@ spec:
 
 ### Run the Deployment with the Service
 
-1. Connect to your Control Node if you haven't already. I recommend SSH.
+#### 1. Connect to your Control Node if you haven't already. I recommend SSH.
 
 ```bash
 ssh <USER>@<CONTROL-NODE-IP-ADDRESS>
 ```
 
-2. Pull the 02-simple_deployment_with_service Manifest from the Github Repo and apply it to the cluster
+#### 2. Pull the 02-simple_deployment_with_service Manifest from the Github Repo and apply it to the cluster
 ```bash
 sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/12-simple_deployment_with_service.yaml
 ```
 
-3. Verify that the manifest was pulled, and that the Deployment has started.
+#### 3. Verify that the manifest was pulled, and that the Deployment has started.
 ```bash
 sudo kubectl get deploy
 
@@ -298,7 +298,7 @@ NAME    READY   UP-TO-DATE   AVAILABLE   AGE
 nginx   3/3     3            3           2m1s
 ```
 
-4. Verify that the Service is running
+#### 4. Verify that the Service is running
 ```bash
 sudo kubectl get svc nginx
 
@@ -309,7 +309,7 @@ nginx   NodePort   10.43.136.190   <none>        80:30080/TCP   2m29s
 
 Our output says that we have exposed port 30080 outside the cluster, and it's mapped to port 80 on our Pods.
 
-5. Test that the Deployment is working. This can be done in two ways.
+#### 5. Test that the Deployment is working. This can be done in two ways.
 - Open a web browser and navigate to `http://<ANY-NODES-IP-ADDRESS>:30080` and view the default Nginx welcome page.
 - Use curl to confirm that the service is exposing the deployment:
 ```bash
@@ -318,17 +318,17 @@ curl http://<ANY-NODES-IP-ADDRESS>:30080
 
 ### Cleanup the Deployment and Service
 
-1. Delete the Deployment
+#### 1. Delete the Deployment
 ```bash
 sudo kubectl delete deployment nginx
 ```
 
-2. Delete the Service
+#### 2. Delete the Service
 ```bash
 sudo kubectl delete service nginx
 ```
 
-3. Verify the Pods have been removed.
+#### 3. Verify the Pods have been removed.
 ```bash
 sudo kubectl get pods
 
@@ -336,7 +336,7 @@ sudo kubectl get pods
 No resources found in default namespace.
 ```
 
-4. Verify the Service has been removed.
+#### 4. Verify the Service has been removed.
 ```bash
 sudo kubectl get services | grep nginx
 
