@@ -32,12 +32,12 @@ You can define Secrets and ConfigMaps in files, but for our example we'll just d
 
 ```bash
 # Apply a ConfigMap
-sudo kubectl create configmap demo4-config \
-  --from-literal=WELCOME_MESSAGE="Hello from ConfigMap!" \
+sudo kubectl create configmap demo4-config --from-literal=WELCOME_MESSAGE="Hello from ConfigMap!" \
+```
 
+```bash
 # Apply a Secret
-sudo kubectl create secret generic demo4-secret \
-  --from-literal=DB_PASSWORD="Its_a_Secret!!!"
+sudo kubectl create secret generic demo4-secret --from-literal=DB_PASSWORD="Its_a_Secret!!!"
 ```
 
 Creating `ConfigMaps` and `Secrets` are helpful when you want to add variables and keep them separate from your code. These values are stored in the Cluster, which is generally a more secure way to store them. `Secrets` take it a step further by encrypting the value.
