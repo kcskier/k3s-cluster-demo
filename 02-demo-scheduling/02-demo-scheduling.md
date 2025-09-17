@@ -172,9 +172,9 @@ Taints:             dedicated=demo:NoSchedule
 
 Tainting Nodes forces Pods to have to "opt-in" in order to be scheduled on a tainted node.
 
-#### 4. Pull the 20-nodeSelector_with_labels Manifest from the Github Repo and apply it to the cluster
+#### 4. Pull the 21-nodeSelector_with_taints Manifest from the Github Repo and apply it to the cluster
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/20-nodeSelector_with_labels.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/21-nodeSelector_with_taints.yaml
 ```
 
 #### 5. Verify the Pods
@@ -270,9 +270,9 @@ sudo kubectl taint nodes rd-rp52 dedicated=demo:NoSchedule-
 
 ## 4. Affinity and Anti-Affinity
 
-At this point, we've learned how to control where Kubernetes places Pods on Nodes using Labels and Taints, but there is a third way that provices much finer control.
+At this point, we've learned how to control where Kubernetes places Pods on Nodes using Labels and Taints, but there is a third way that provides much finer control.
 
-Affinity rules provides similar functionality, but give much finer control. For example, what if we want nodes to ***prefer*** the Pi5s, but not be completely barred from using the Pi3? Affinity would allow us to do this.
+Affinity rules provide similar functionality, but give much finer control. For example, what if we want nodes to ***prefer*** the Pi5s, but not be completely barred from using the Pi3? Affinity would allow us to do this.
 
 In this example, we've taken that same Nginx example from Demo 1, and we've modified it to use Affinity/Anti-Affinity:
 ```yaml

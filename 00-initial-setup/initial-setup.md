@@ -4,7 +4,7 @@ One-time preparation to make your nodes ready for any demo in this repo.
 
 > **Author’s notes:**  
 >- You do not have to use Raspberry Pis to follow this lab. I’m using Pi 5s (plus a 3B+) because I had them on hand. I’ve documented the hoops I jumped through, but any Linux nodes that support K3s will work.  
->- I’ve kept the K3s setup as hardware-neutral as possible; Pi-specific bits are here mainly for reference.  
+>- I’ve kept the K3s setup as hardware-neutral as possible; any pi-specific bits are here mainly for reference.  
 >- I used Ubuntu Server 25.04, so commands use Debian/Ubuntu syntax. Any Linux distro that supports K3s will work, so adjust commands as needed.
 
 
@@ -44,7 +44,7 @@ sudo swapoff -a
 sudo sed -ri '/\sswap\s/s/^/#/' /etc/fstab
 ```
 
-#### 4. Optional - Enable bridge netfilter. These are recommended setttings for Kubernetes.
+#### 4. Optional - Enable bridge netfilter. These are recommended settings for Kubernetes.
 ```bash
 # Enable br_netfilter at boot
 sudo bash -c 'echo br_netfilter >/etc/modules-load.d/k8s.conf'
@@ -95,11 +95,9 @@ sysctl net.bridge.bridge-nf-call-ip6tables
 
 ### 1. Primary Control Node (`rd-rp51`)
 
-#### 1. Install K3s server. (initialize the cluster) Replace `<NODE-NAME>` with the name of the primary node. (In my case, its `rd-rp51`)
+#### 1. Install K3s server. (initialize the cluster) Replace `<NODE-NAME>` with the name of the primary node. (In my case, it's `rd-rp51`)
 ```bash
-curl -sfL https://get.k3s.io | \
-  INSTALL_K3S_CHANNEL=stable \
-  sh -s - server \
+curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=stable sh -s - server \
   --cluster-init \
   --node-name <NODE-NAME> \
   --tls-san <NODE-NAME> \
@@ -131,7 +129,7 @@ hostname -I | awk '{print $1}'
 
 >*It is worth mentioning that control planes require strict quorum. If this was a production environment, I would recommend setting up two agent nodes rather than two control plane nodes.*
 
-#### 1. Replace `<TOKEN>` and `<ADDRESS>` with the value from Primary Node. Also `<NODE-NAME>` is the name of this node. (In my case, its `rd-rp52`)
+#### 1. Replace `<TOKEN>` and `<ADDRESS>` with the value from Primary Node. Also `<NODE-NAME>` is the name of this node. (In my case, it's `rd-rp52`)
 ```bash
 curl -sfL https://get.k3s.io | \
   INSTALL_K3S_CHANNEL=stable \
@@ -141,7 +139,7 @@ curl -sfL https://get.k3s.io | \
   --node-name <NODE-NAME>
 ```
 
-#### 2. Verify that Node has connected to cluster:
+#### 2. Verify that Node has connected to the cluster:
 ```bash
 sudo kubectl get nodes
 ```
@@ -149,7 +147,7 @@ sudo kubectl get nodes
 
 ### 3. Worker/Agent Node (`rd-rp31`)
 
-#### 1. Replace `<TOKEN>` and `<ADDRESS>` with the value from Primary Node. Also `<NODE-NAME>` is the name of this node. (In my case, its `rd-rp31`)
+#### 1. Replace `<TOKEN>` and `<ADDRESS>` with the value from Primary Node. Also `<NODE-NAME>` is the name of this node. (In my case, it's `rd-rp31`)
 ```bash
 curl -sfL https://get.k3s.io | \
   INSTALL_K3S_CHANNEL=stable \
@@ -178,6 +176,6 @@ rd-rp51   Ready    control-plane,etcd,master   15m   v1.33.4+k3s1
 rd-rp52   Ready    control-plane,etcd,master   13m   v1.33.4+k3s1
 ```
 
-If you see all your nodes, congratulations! You have setup your cluster. You can now return to the demos and run one.
+If you see all your nodes, congratulations! You have set up your cluster. You can now return to the demos and run one.
 
 [**Click here to go to the Demos**](../README.md#demos)

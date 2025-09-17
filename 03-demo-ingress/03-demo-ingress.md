@@ -1,6 +1,6 @@
 # Demo 3 - Ingress with Traefik
 
-This demo will show how to expose a deployment using an Ingress resource. Instead of relying on port-forwarding or NodePort, we can use an ingress controller to make an app accessible at a real hostname. This is the recommended way to expose HTTP/HTTPS traffic into Kubernetes.
+This demo will show how to expose a deployment using an Ingress resource. Instead of relying on port forwarding or NodePort, we can use an ingress controller to make an app accessible at a real hostname. This is the recommended way to expose HTTP/HTTPS traffic into Kubernetes.
 
 ## Learning Goals
 
@@ -84,7 +84,8 @@ spec:
 #### 1. Apply the Manifest to the Cluster
 
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/refs/heads/main/manifests/demo/30-ingress_example.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/30-ingress_example.yaml
+
 ```
 
 #### 2. Edit the hosts file on Control Node. (`rd-rp51` in my case) Open `/etc/hosts`:
@@ -97,6 +98,8 @@ And add the following line:
 ```bash
 127.0.0.1 nginx.local
 ```
+
+> *Note: This only is done on the control node*
 
 ## 3. Test with Curl
 
@@ -134,7 +137,7 @@ Commercial support is available at
 </html>
 ```
 
-**Congratulations!** You just setup an Ingress Controller!
+**Congratulations!** You just set up an Ingress Controller!
 
 ## 4. Cleanup
 

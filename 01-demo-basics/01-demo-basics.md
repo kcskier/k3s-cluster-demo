@@ -1,7 +1,7 @@
 # Demo 1 - The Basics (Pods, Deployments, Services)
 
 > **Author’s notes:**  
->- I’ve kept the K3s setup as hardware-neutral as possible; Any Pi-specific bits are here mainly for reference.
+>- I’ve kept the K3s setup as hardware-neutral as possible; any Pi-specific bits are here mainly for reference.
 >- I used Ubuntu Server 25.04, so commands use Debian/Ubuntu syntax.
 
 ## Learning Goals
@@ -57,7 +57,7 @@ nginx   1/1     Running   0          2m15s
 
 ### Cleanup the Pod
 
-1. Stop and delete the Nginx pod
+1. Stop and delete the Nginx Pod
 ```bash
 sudo kubectl delete pod nginx
 ```
@@ -76,11 +76,11 @@ If you hadn't picked up on it yet, there are some obvious issues with running a 
 - This Pod is running, but there is no way to access it, since no ports are forwarded or mapped.
 - If this Pod was to crash, it would have to be manually restarted.
 
-This is where a deployment and a service will help us. We'll tackle each one separately, starting with a deployment.
+This is where a Deployment and a Service will help us. We'll tackle each one separately, starting with a deployment.
 
 ## 2. Running a Deployment
 
-A Deployment manages Pods for you. It creates ReplicaSets, handles scaling, and replaces dead Pods. We've modifed our original Manifest yaml to include a deployment:
+A Deployment manages Pods for you. It creates ReplicaSets, handles scaling, and replaces dead Pods. We've modified our original Manifest yaml to include a deployment:
 
 ```yaml
 apiVersion: apps/v1 # Changed to include Deployments
@@ -119,7 +119,7 @@ A Deployment fixes the following issues with our Simple Pod example:
 ssh <USER>@<CONTROL-NODE-IP-ADDRESS>
 ```
 
-2. Pull the 01-simple_deployment Manifest from the Github Repo and apply it to the cluster
+2. Pull the 11-simple_deployment Manifest from the Github Repo and apply it to the cluster
 ```bash
 sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/11-simple_deployment.yaml
 ```
@@ -177,7 +177,7 @@ nginx-96b9d695-dvf55   1/1     Running   0          7s
 nginx-96b9d695-vnkmv   1/1     Running   0          7s
 ```
 
-Notice on the output from step 3 that the Pod names and the age has changed. The Deployment automatically recreated the Pods when they were all deleted.
+Notice on the output from step 3 that the Pod names and the age have changed. The Deployment automatically recreated the Pods when they were all deleted.
 
 ### Scaling
 
@@ -284,7 +284,7 @@ spec:
 ssh <USER>@<CONTROL-NODE-IP-ADDRESS>
 ```
 
-#### 2. Pull the 02-simple_deployment_with_service Manifest from the Github Repo and apply it to the cluster
+#### 2. Pull the 12-simple_deployment_with_service Manifest from the Github Repo and apply it to the cluster
 ```bash
 sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/12-simple_deployment_with_service.yaml
 ```

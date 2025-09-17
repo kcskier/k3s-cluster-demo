@@ -32,7 +32,7 @@ You can define Secrets and ConfigMaps in files, but for our example we'll just d
 
 ```bash
 # Apply a ConfigMap
-sudo kubectl create configmap demo4-config --from-literal=WELCOME_MESSAGE="Hello from ConfigMap!" \
+sudo kubectl create configmap demo4-config --from-literal=WELCOME_MESSAGE="Hello from ConfigMap!" 
 ```
 
 ```bash
@@ -44,7 +44,7 @@ Creating `ConfigMaps` and `Secrets` are helpful when you want to add variables a
 
 #### 2. Create a Deployment
 
-We will modify the simple deployment yaml to now instruct the container pull a variable and secret:
+We will modify the simple deployment yaml to instruct the container pull a variable and secret:
 
 ```yaml
 # Based on 11-simple_deployment.yaml
@@ -73,7 +73,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: demo4-config
-          # NEW - Define the environment variable
+          # NEW - Define the Secret
           env:
             - name: DB_PASSWORD
               valueFrom:
@@ -102,7 +102,7 @@ Now we need to enter the Pod and confirm that it can get the variable and secret
 The following is a quick bash script that will locate the pod and print the values.
 
 ```bash
-POD=$(sudo kubectl get pod -l app=nginx -o jsonpath='{.items[0].metadata.name}');
+POD=$(sudo kubectl get pod -l app=nginx -o jsonpath='{.items[0].metadata.name}') &&
 
 sudo kubectl exec -it "$POD" -- /bin/sh -lc 'echo "WELCOME_MESSAGE=$WELCOME_MESSAGE"; echo "DB_PASSWORD=$DB_PASSWORD"'
 ```
@@ -110,7 +110,7 @@ sudo kubectl exec -it "$POD" -- /bin/sh -lc 'echo "WELCOME_MESSAGE=$WELCOME_MESS
 ```bash
 # Example output
 WELCOME_MESSAGE=Hello from ConfigMap!
-DB_PASSWORD=Its_a_Secretsudo kubectl create secret generic -h!
+DB_PASSWORD=Its_a_Secret!!!
 ```
 
 ## 3. Cleanup
