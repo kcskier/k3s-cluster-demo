@@ -22,4 +22,4 @@ After completing the Initial Setup, pick any of the following demos.
 - [**Demo 1 - The Basics**](./01-demo-basics/01-demo-basics.md): Kubernetes fundamentals. Set up a Pod, Deployment and Service.
 - [**Demo 2 - Scheduling**](./02-demo-scheduling/02-demo-scheduling.md): Labels, taints, and tolerations. Learn how Kubernetes decides which node runs a workload.
 - [**Demo 3 - Ingress with Traefik**](./03-demo-ingress/03-demo-ingress.md): Demostrates accessing apps via Ingress and setup of Ingress Controllers.
-- [**Demo 4 - ConfigMaps and Secrets**](./04-configmaps_and_secrets/04-configmaps_and_secrets.md): Show how to pass configuration and sensitive data to deployments.
+- [**Demo 4 - ConfigMaps and Secrets**](./04-configmaps-and-secrets/04-configmaps_and_secrets.md): Show how to pass configuration and sensitive data to deployments.
