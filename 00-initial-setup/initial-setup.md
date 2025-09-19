@@ -39,17 +39,24 @@ sudo sed -i '1 s/$/ cgroup_memory=1 cgroup_enable=memory cgroup_enable=cpuset/' 
 ```
 
 #### 3. Since we are on a Raspberry Pi and running on flash memory, we will disable the memory swap feature:
+Disable memory swap:
 ```bash
 sudo swapoff -a
+```
+
+Update fstab:
+```bash
 sudo sed -ri '/\sswap\s/s/^/#/' /etc/fstab
 ```
 
 #### 4. Optional - Enable bridge netfilter. These are recommended settings for Kubernetes.
+Enable br_netfilter at boot
 ```bash
-# Enable br_netfilter at boot
 sudo bash -c 'echo br_netfilter >/etc/modules-load.d/k8s.conf'
+```
 
-# Enable persistent bridging that survives reboots
+Enable persistent bridging that survives reboots
+```bash
 sudo bash -c 'cat >/etc/sysctl.d/99-k8s.conf <<EOF
 net.ipv4.ip_forward=1
 net.bridge.bridge-nf-call-iptables=1
@@ -65,8 +72,9 @@ sudo reboot
 #### 6. Verify that cgroup flags are present:
 ```bash
 cat /proc/cmdline | tr ' ' '\n' | grep -E 'cgroup_memory=1|cgroup_enable=memory|cgroup_enable=cpuset'
-
-# Should return a list like this:
+```
+Expected Results:
+```text
 cgroup_memory=1
 cgroup_enable=memory
 cgroup_enable=cpuset
@@ -74,21 +82,36 @@ cgroup_enable=cpuset
 
 #### 7. Verify that memory swap is disabled
 ```bash
-# Should return nothing
-swapon --show
-
-# Should return a bunch of zeros
-free -h | awk '/Swap:/ {print}'
+swapon --show # Should return nothing
+```
+Expected Results:
+```bash
+free -h | awk '/Swap:/ {print}' # Should return a bunch of zeros
 ```
 
 #### 8. Verify that bridge netfilter is enabled
+Check that br_netfilter is enabled:
 ```bash
 lsmod | grep br_netfilter
+```
 
-# Each of these should return a value of 1
-sysctl net.ipv4.ip_forward
-sysctl net.bridge.bridge-nf-call-iptables
+Verify that network bridge rules applied:
+```bash
+sysctl net.ipv4.ip_forward && \
+sysctl net.bridge.bridge-nf-call-iptables && \
 sysctl net.bridge.bridge-nf-call-ip6tables
+```
+
+Example Output:
+```bash
+# lsmod | grep br_netfilter
+br_netfilter           32768  0
+bridge                376832  1 br_netfilter
+
+# sysctl commands. Each should be value of 1
+net.ipv4.ip_forward = 1
+net.bridge.bridge-nf-call-iptables = 1
+net.bridge.bridge-nf-call-ip6tables = 1
 ```
 
 ## Installing K3s
@@ -168,8 +191,10 @@ sudo kubectl get nodes
 At this point, you should have a working K3s cluster operating on your nodes. You can verify by going to any node and running:
 ```bash
 sudo kubectl get nodes
+```
 
-# Example Output from my setup:
+Example Output from my setup:
+```text
 NAME      STATUS   ROLES                       AGE   VERSION
 rd-rp31   Ready    <none>                      2m   v1.33.4+k3s1
 rd-rp51   Ready    control-plane,etcd,master   15m   v1.33.4+k3s1
