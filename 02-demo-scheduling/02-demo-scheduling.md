@@ -248,7 +248,7 @@ spec:
 
 #### Pull the 22-nodeSelector_with_tolerations Manifest from the Github Repo and apply it to the cluster:
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/20-nodeSelector_with_tolerations.yaml
+sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/21-nodeSelector_with_tolerations.yaml
 ```
 
 #### Verify the Pods
@@ -384,9 +384,26 @@ sudo kubectl delete deployment nginx
 #### Verify that the Pods have been removed
 ```bash
 sudo kubectl get pods
-
-# Example return status
+```
+Example Output:
+```bash
 No resources found in default namespace.
+```
+
+#### Remove labels from each Node
+For `rd-rp51`:
+```bash
+sudo kubectl label node rd-rp51 hardware-
+```
+
+For `rd-rp52`:
+```bash
+sudo kubectl label node rd-rp52 hardware-
+```
+
+For `rd-rp31`:
+```bash
+sudo kubectl label node rd-rp31 hardware-
 ```
 
 ### Affinity Summary
