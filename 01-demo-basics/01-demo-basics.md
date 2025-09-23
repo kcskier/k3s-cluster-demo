@@ -177,7 +177,7 @@ nginx-96b9d695-dvf55   1/1     Running   0          7s
 nginx-96b9d695-vnkmv   1/1     Running   0          7s
 ```
 
-Notice on the output from step 3 that the Pod names and the age have changed. The Deployment automatically recreated the Pods when they were all deleted.
+Notice on the output from step 3 that the Pod names and age have changed. The Deployment automatically recreated the Pods when they were all deleted.
 
 ### Scaling
 

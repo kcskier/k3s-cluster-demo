@@ -14,9 +14,6 @@ spec:
         app: nginx
     # Pod
     spec:
-      nodeSelector:
-        hardware: "pi5"
-      # New Tolerations Section
       tolerations:
         - key: "dedicated"
           operator: "Equal"

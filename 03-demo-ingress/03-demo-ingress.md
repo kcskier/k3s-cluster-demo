@@ -85,7 +85,6 @@ spec:
 
 ```bash
 sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/30-ingress_example.yaml
-
 ```
 
 #### 2. Edit the hosts file on Control Node. (`rd-rp51` in my case) Open `/etc/hosts`:

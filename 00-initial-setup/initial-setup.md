@@ -148,29 +148,9 @@ sudo cat /var/lib/rancher/k3s/server/node-token
 hostname -I | awk '{print $1}'
 ```
 
-### 2. Secondary Control Node (`rd-rp52`)
+### 2. Worker/Agent Nodes (`rd-rp31` and `rd-rp52`)
 
->*It is worth mentioning that control planes require strict quorum. If this was a production environment, I would recommend setting up two agent nodes rather than two control plane nodes.*
-
-#### 1. Replace `<TOKEN>` and `<ADDRESS>` with the value from Primary Node. Also `<NODE-NAME>` is the name of this node. (In my case, it's `rd-rp52`)
-```bash
-curl -sfL https://get.k3s.io | \
-  INSTALL_K3S_CHANNEL=stable \
-  K3S_URL=https://<ADDRESS>:6443 \
-  K3S_TOKEN=<TOKEN> \
-  sh -s - server \
-  --node-name <NODE-NAME>
-```
-
-#### 2. Verify that Node has connected to the cluster:
-```bash
-sudo kubectl get nodes
-```
->*Node may take a few seconds to appear on the list*
-
-### 3. Worker/Agent Node (`rd-rp31`)
-
-#### 1. Replace `<TOKEN>` and `<ADDRESS>` with the value from Primary Node. Also `<NODE-NAME>` is the name of this node. (In my case, it's `rd-rp31`)
+#### 1. Run the setup script on both worker nodes. Replace `<TOKEN>` and `<ADDRESS>` with the values from Primary Node, and replate `<NODE-NAME>` with the names of your nodes. (`rd-rp31` and `rd-rp51`)
 ```bash
 curl -sfL https://get.k3s.io | \
   INSTALL_K3S_CHANNEL=stable \
@@ -180,11 +160,11 @@ curl -sfL https://get.k3s.io | \
   --node-name <NODE-NAME>
 ```
 
-#### 2. Verify that Node has connected to cluster:
+#### 2. Verify that both Nodes have connected to cluster:
 ```bash
 sudo kubectl get nodes
 ```
->*Node may take a few seconds to appear on the list*
+>*Nodes may take a few seconds to appear on the list*
 
 ## Conclusion
 
@@ -195,10 +175,10 @@ sudo kubectl get nodes
 
 Example Output from my setup:
 ```text
-NAME      STATUS   ROLES                       AGE   VERSION
-rd-rp31   Ready    <none>                      2m   v1.33.4+k3s1
-rd-rp51   Ready    control-plane,etcd,master   15m   v1.33.4+k3s1
-rd-rp52   Ready    control-plane,etcd,master   13m   v1.33.4+k3s1
+NAME      STATUS   ROLES                       AGE     VERSION
+rd-rp31   Ready    <none>                      3m33s   v1.33.4+k3s1
+rd-rp51   Ready    control-plane,etcd,master   7m40s   v1.33.4+k3s1
+rd-rp52   Ready    <none>                      4m55s   v1.33.4+k3s1
 ```
 
 If you see all your nodes, congratulations! You have set up your cluster. You can now return to the demos and run one.
