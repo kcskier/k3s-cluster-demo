@@ -1,6 +1,6 @@
 # Demo 2 - Scheduling (Labels, Taints, and Tolerations)
 
-This demo teaches how Kubernetes decides where to place Pods, and how to control that behavior.
+This demo teaches how Kubernetes decides where to place Pods and how to control that behavior.
 
 ## Learning Goals
 
@@ -197,7 +197,7 @@ sudo kubectl get pods -o wide
 ```
 
 Example Output:
-```
+```bash
 NAME                   READY   STATUS    RESTARTS   AGE     IP           NODE      NOMINATED NODE   READINESS GATES
 nginx-96b9d695-r64xt   1/1     Running   0          2m15s   10.42.1.17   rd-rp52   <none>           <none>
 nginx-96b9d695-stclr   1/1     Running   0          2m15s   10.42.1.16   rd-rp52   <none>           <none>
@@ -213,7 +213,7 @@ sudo kubectl delete deployment nginx
 
 ### Adding Tolerations
 
-Let's modify the Manifest to allow the Pods to tolerate a tainted node. In this example, we want to allow Pods to be schduled on the tainted control node, `rd-rp51`.
+Let's modify the Manifest to allow the Pods to tolerate a tainted node. In this example, we want to allow Pods to be scheduled on the tainted control node, `rd-rp51`.
 
 The Manifest below is just the 11-simple_deployment.yaml with a new tolerations section in the spec section:
 ```yaml
@@ -331,6 +331,7 @@ spec:
           ports:
             - containerPort: 80
 ```
+
 This new `affinity` section has two parts:
 - `nodeAffinity`: This section tells the Deployment to prefer any node with a `hardware=pi5` label.
 - `podAntiAffinity`: At the same time, this section tells the Deployment to avoid putting Pods all the same Node.

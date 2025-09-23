@@ -17,7 +17,7 @@ spec:
       tolerations:
         - key: "dedicated"
           operator: "Equal"
-          value: "demo"
+          value: "control"
           effect: "NoSchedule"
       containers:
         - name: nginx
