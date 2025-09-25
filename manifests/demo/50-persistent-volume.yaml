@@ -1,0 +1,50 @@
+# New PVC
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: demo5-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  storageClassName: local-path   # ← put it here
+  resources:
+    requests:
+      storage: 1Gi
+---
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      # NEW - Creates a small index.html inside the volume
+      initContainers:
+        - name: init-write
+          image: busybox
+          command: ["/bin/sh","-c"]
+          args:
+            - 'mkdir -p /data && printf "<h1>Demo 05</h1><p>Created: $(date)</p>\n" > /data/index.html'
+          volumeMounts:
+            - name: data
+              mountPath: /data
+      # Define Pod
+      containers:
+        - name: nginx
+          image: nginx
+          volumeMounts:
+            - name: data
+              mountPath: /usr/share/nginx/html
+      # NEW - Define the volumes
+      volumes:
+        - name: data
+          persistentVolumeClaim:
+            claimName: demo5-pvc
