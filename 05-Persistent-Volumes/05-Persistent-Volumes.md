@@ -4,9 +4,10 @@ In this demo, we'll be adding persistent storage to our nginx app using the defa
 
 ## Learning Goals
 
-- Understand the parts of Perisistent Volumes. (`StorageClass`, `PVC`, `PV`, and `volumeMount`)
+- Understand the parts of Persistent Volume resources. (`StorageClass`, `PVC`, `PV`, and `volumeMount`)
 - How Kubernetes provisions storage dynamically.
-- How to prove node-local behavior and the differences with distributed storage.
+- Show node-local behavior.
+- Explore the differences between local-path and distributed storage.
 
 ## Prerequisites
 
@@ -23,7 +24,7 @@ Let's start by talking about the parts required to create a Persistent Volume:
 
 So with that all in mind, let's modify our 11-simple-deployment Manifest to create a Persistent Volume:
 ```yaml
-# New PV
+# New PVC
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
@@ -101,7 +102,7 @@ sudo kubectl get pv
 
 Example Output:
 ```bash
-# We want to see status Bound
+# Again, we want to see status Bound
 NAME                                       CAPACITY   ACCESS MODES   RECLAIM POLICY   STATUS   CLAIM               STORAGECLASS   VOLUMEATTRIBUTESCLASS   REASON   AGE
 pvc-a4e97e26-4f09-4d89-aea5-58a5b6283f2b   1Gi        RWO            Delete           Bound    default/demo5-pvc   local-path     <unset>                          5m37s
 ```
@@ -114,7 +115,7 @@ sudo kubectl get pods
 Example Output:
 ```bash
 NAME                     READY   STATUS    RESTARTS   AGE
-nginx-5d44fb9c8b-727cc   1/1     Running   0          7m23s                         5m37s
+nginx-5d44fb9c8b-727cc   1/1     Running   0          7m23s
 ```
 
 ## Port Forward the Pod
@@ -134,7 +135,7 @@ Example Output:
 <h1>Demo 05</h1><p>Created: Wed Sep 24 21:58:44 UTC 2025</p>
 ```
 
-## Delete the Pod and Demonstrate Persistence
+## Delete the Pod and Demostrate Persistence
 
 Now that we can see the persistent volume working, we will attempt to delete the Pod and show that the `index.html` file is still available.
 
@@ -181,7 +182,7 @@ sudo kubectl get deploy,pod,pvc,pv # Should return "No resources found"
 > *Note* - This may take a few minutes to apply.
 
 ## Distributed Storage
-Local-path volumes are great for single Modes, but they create problems if you need data to exist across multiple Nodes. Because the data is stored on a single Node’s disk, if a Pod is rescheduled from `rd-rp52` to `rd-rp31`, the Pod will no longer have access to the files it wrote when it was running on `rd-rp52`.
+Local-path volumes are great for single Node setups, but they create problems if you need data to exist across multiple Nodes. Because the data is stored on a single Node’s disk, if a Pod is rescheduled from `rd-rp52` to `rd-rp31`, the Pod will no longer have access to the files it wrote when it was running on `rd-rp52`.
 
 This is where **Distributed Storage** comes in. Distributed storage adds resilience and replication to persistent storage. Instead of the data existing on only one node, it is automatically replicated in the background to other participating nodes and reattached to a Pod when rescheduling occurs. This provides highly available storage and allows Pods to move freely across the cluster without worrying about which node holds the data.
 
@@ -195,8 +196,8 @@ A few common Distributed Storage options:
 |-|-|
 | Directory on disk of a single Node | Replicated across multiple Nodes |
 | Pods must run on the same Node | Pods can run on any Node |
-| If Node fails, data is unavailable | Data "Self-Heals" and volume reattaches |
-| Only a single Pod can Read/Write (RWO mode) | Allows for simultaineous Read/Writes (RWX mode) |
+| If Node fails, data is unavailable | Data "self-heals" and volume reattaches |
+| Only a single Pod can Read/Write (RWO mode) | Allows for simultaneous Read/Writes (RWX mode) |
 | Built-In to K3s | Requires extra controllers and monitoring |
 | Best for ephemeral apps, short-lived demos | Best for production workloads |
 
@@ -204,10 +205,10 @@ A few common Distributed Storage options:
 
 ## Conclusion
 
-This demo you learned how Kubernetes provides persistent storage using PersistentVolumeClaims (PVCs), how PVCs bind to PersistentVolumes (PVs) provisioned by a StorageClass.
+In this demo, you learned how Kubernetes provides persistent storage using PersistentVolumeClaims (PVCs), how PVCs bind to PersistentVolumes (PVs) provisioned by a StorageClass.
 
 In this demo, you saw that:
-- Pods are ephermeral, but can have persistent data. Despite deleting a Pod, the `index.html` was served because it was stored on the PVC's volume.
+- Pods are ephemeral, but can have persistent data. Despite deleting a Pod, the `index.html` was served because it was stored on the PVC's volume.
 - The built-in `local-path` StorageClass in K3s is easy, but the data is stored only on a single Node. If the Node goes down, so does the data.
 - Distributed storage systems (Longhorn, Ceph, or OpenEBS) address this limitation by replicating volumes across multiple Nodes, and allow Pods to be scheduled across all participating Nodes.
 
