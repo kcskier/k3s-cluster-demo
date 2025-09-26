@@ -18,7 +18,7 @@ This demo shows how to add **readiness** and **liveness** probes, perform a **ro
 
 ## Setting up our Manifest
 
-Per usual, we start by modifying to our 11-simple-deployment Manifest:
+Per usual, we start by modifying our 11‑simple‑deployment Manifest:
 ```yaml
 apiVersion: apps/v1
 kind: Deployment
@@ -41,22 +41,21 @@ spec:
     spec:
       containers:
         - name: nginx
-          image: nginx:1.27.1-alpine   # pin version for demo
+          image: nginx:1.27.1-alpine   # pin the version so updates are explicit.
           ports:
             - containerPort: 80
-          # NEW - Readiness Probe gates traffic until Pod is ready
+          # NEW - Readiness Probe: Gates traffic until the pod is ready
           readinessProbe:
             httpGet:
               path: /
               port: 80
             initialDelaySeconds: 3
-          # NEW - Liveness Probe restarts container if it becomes unhealthy
+          # NEW - Liveness Probe: Restarts the Pod if it becomes unhealthy
           livenessProbe:
             httpGet:
               path: /
               port: 80
             initialDelaySeconds: 10
-
 ```
 
 There are two new items added at the bottom:
@@ -66,7 +65,7 @@ There are two new items added at the bottom:
 ## Apply Manifest to the Cluster
 Apply our demo Manifest to the Cluster:
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/60-rolling_updates.yaml
+kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/60-rolling_updates.yaml
 ```
 
 Verify that the Deployment has applied:
@@ -86,14 +85,14 @@ pod/nginx-6b5c4f487f-gvrxg   1/1     Running   4 (20s ago)   2m50s
 ```
 
 ## Apply a rolling update
-Currently, our Deployment is running the `nginx:1.27.1-alpine` image. We would like to rollout `nginx:1.27.2-alpine` to all our Pods.
+Currently, our Deployment is running the `nginx:1.27.1-alpine` image. We would like to roll out `nginx:1.27.2-alpine` to all our Pods.
 
-Set the image on the deployment:
+Set the image on the Deployment:
 ```bash
 kubectl set image deploy/nginx nginx=nginx:1.27.2-alpine
 ```
 
-Annotate a `change-cause` to the deployment:
+Annotate a `change-cause` to the Deployment:
 ```bash
 kubectl annotate deploy/nginx kubernetes.io/change-cause="Good update to 1.27.2-alpine"
 ```
@@ -122,7 +121,7 @@ kubectl patch deploy/nginx --type='json' -p='[
 ]'
 ```
 
-Run the rollout command with  `--timeout=30s`. This will show that our deployment is not starting properly:
+Run the rollout command with  `--timeout=30s`. This will show that our Deployment is not starting properly:
 ```bash
 kubectl rollout status deploy/nginx --timeout=30s
 ```
@@ -134,7 +133,7 @@ Waiting for deployment "nginx" rollout to finish: 1 out of 3 new replicas have b
 error: timed out waiting for the condition
 ```
 
-(Optional) You can watch the Pods crash and restart in realtime. Notice that the `Restart` counter in increasing thanks to that Liveness Probe:
+(Optional) You can watch the Pods crash and restart in realtime. Notice that the `Restart` counter is increasing thanks to that Liveness Probe:
 ```bash
 kubectl get pods -l app=nginx -w
 ```
@@ -183,7 +182,7 @@ View current status of the rollout:
 kubectl rollout status deploy/nginx
 ```
 
-Finally, verify that the deployment has come up successfully:
+Finally, verify that the Deployment has come up successfully:
 ```bash
 kubectl get deploy,pods
 ```
@@ -208,7 +207,7 @@ No resources found in default namespace.
 
 In this demo, you enhanced a simple Deployment with health checks and learned how Kubernetes manages application updates and failures.
 
-- **Readiness and Liveness Probes** allows a Pod to be used only when healthy, and automatically restarts in the event that the Pod is unhealthy.
+- **Readiness and Liveness Probes** allow a Pod to be used only when healthy, and automatically restarts in the event that the Pod is unhealthy.
 - **Rolling updates** let you safely patch a Deployment without downtime.  
 - **Rollbacks** provide a quick recovery path when a change causes failures, restoring the Deployment to a known good state.
 
