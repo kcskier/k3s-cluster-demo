@@ -170,12 +170,17 @@ Example Output:
 sudo kubectl delete deploy nginx
 ```
 
-2. Delete the Claim
+2. Delete the Service
+```bash
+kubectl delete service nginx-persistent
+```
+
+3. Delete the Claim
 ```bash
 sudo kubectl delete pvc demo5-pvc
 ```
 
-3. Verify that everything is gone.
+4. Verify that everything is gone.
 ```bash
 sudo kubectl get deploy,pod,pvc,pv # Should return "No resources found"
 ```
