@@ -1,0 +1,36 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx
+  # NEW - change-cause will be used later for tracking changes
+  annotations:
+    kubernetes.io/change-cause: "Initial deploy"
+# Define Deployment
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    # Define Pod
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.27.1-alpine   # pin so updates are explicit
+          ports:
+            - containerPort: 80
+          # NEW - Readiness Probe gates traffic until Pod is ready
+          readinessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 3
+          # NEW - Liveness Probe restarts container if it becomes unhealthy
+          livenessProbe:
+            httpGet:
+              path: /
+              port: 80
+            initialDelaySeconds: 10
