@@ -65,12 +65,12 @@ There are two new items added at the bottom:
 ## Apply Manifest to the Cluster
 Apply our demo Manifest to the Cluster:
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/60-rolling_updates.yaml
+kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/60-rolling_updates.yaml
 ```
 
 Verify that the Deployment has applied:
 ```bash
-sudo kubectl get deploy,pods
+kubectl get deploy,pods
 ```
 
 Example Output:
@@ -89,17 +89,17 @@ Currently, our Deployment is running the `nginx:1.27.1-alpine` image. We would l
 
 Set the image on the Deployment:
 ```bash
-sudo kubectl set image deploy/nginx nginx=nginx:1.27.2-alpine
+kubectl set image deploy/nginx nginx=nginx:1.27.2-alpine
 ```
 
 Annotate a `change-cause` to the Deployment:
 ```bash
-sudo kubectl annotate deploy/nginx kubernetes.io/change-cause="Good update to 1.27.2-alpine"
+kubectl annotate deploy/nginx kubernetes.io/change-cause="Good update to 1.27.2-alpine"
 ```
 
 See the live status of the rollout:
 ```bash
-sudo kubectl rollout status deploy/nginx
+kubectl rollout status deploy/nginx
 ```
 
 Example Output:
@@ -114,7 +114,7 @@ deployment "nginx" successfully rolled out
 Let's *"accidentally"* push a bad patch to the Deployment to simulate a crashed app. This patch effectively forces our Readiness and Liveness Probes to check for something that does not exist, which will break our Deployment:
 
 ```bash
-sudo kubectl patch deploy/nginx --type='json' -p='[
+kubectl patch deploy/nginx --type='json' -p='[
   {"op":"add","path":"/metadata/annotations/kubernetes.io~1change-cause","value":"Breaking Change"},
   {"op":"replace","path":"/spec/template/spec/containers/0/readinessProbe/httpGet/path","value":"/nope"},
   {"op":"replace","path":"/spec/template/spec/containers/0/livenessProbe/httpGet/path","value":"/nope"}
@@ -123,7 +123,7 @@ sudo kubectl patch deploy/nginx --type='json' -p='[
 
 Run the rollout command with  `--timeout=30s`. This will show that our Deployment is not starting properly:
 ```bash
-sudo kubectl rollout status deploy/nginx --timeout=30s
+kubectl rollout status deploy/nginx --timeout=30s
 ```
 
 Example Output:
@@ -135,12 +135,12 @@ error: timed out waiting for the condition
 
 (Optional) You can watch the Pods crash and restart in realtime. Notice that the `Restart` counter is increasing thanks to that Liveness Probe:
 ```bash
-sudo kubectl get pods -l app=nginx -w
+kubectl get pods -l app=nginx -w
 ```
 
 (Optional) You can also run the `describe` command to view details on Pods, including the logs that show the Liveness and Readiness probe failures:
 ```bash
-sudo kubectl describe pod -l app=nginx | grep -A3 -Ei "Readiness probe failed|Liveness probe failed"
+kubectl describe pod -l app=nginx | grep -A3 -Ei "Readiness probe failed|Liveness probe failed"
 ```
 
 ## Rollback the Deployment
@@ -150,7 +150,7 @@ Kubernetes has the `rollback` feature. Rollbacks allow us to undo changes made b
 
 We can view the history of the patches to the Deployment:
 ```bash
-sudo kubectl rollout history deploy/nginx
+kubectl rollout history deploy/nginx
 ```
 
 Thanks to our annotations to the `Change-Cause` field, we can clearly see the changes we've made:
@@ -164,38 +164,38 @@ REVISION  CHANGE-CAUSE
 
 (Optional) View details on a particular revision
 ```bash
-sudo kubectl rollout history deploy/nginx --revision 2
+kubectl rollout history deploy/nginx --revision 2
 ```
 
 Since the Liveness and Readiness checks are failing, we can simply use the undo command to rollback to the Deployment's last working state:
 ```bash
-sudo kubectl rollout undo deploy/nginx
+kubectl rollout undo deploy/nginx
 ```
 
 (Optional) If we wanted to, we could also specify a specific revision to rollback to:
 ```bash
-sudo kubectl rollout undo deploy/nginx --to-revision=2
+kubectl rollout undo deploy/nginx --to-revision=2
 ```
 
 View current status of the rollout:
 ```bash
-sudo kubectl rollout status deploy/nginx
+kubectl rollout status deploy/nginx
 ```
 
 Finally, verify that the Deployment has come up successfully:
 ```bash
-sudo kubectl get deploy,pods
+kubectl get deploy,pods
 ```
 
 ## Cleanup
 Delete the Deployment:
 ```bash
-sudo kubectl delete deploy nginx
+kubectl delete deploy nginx
 ```
 
 Verify that the Deployment was removed:
 ```bash
-sudo kubectl get deploy,pods
+kubectl get deploy,pods
 ```
 
 Example Output:
