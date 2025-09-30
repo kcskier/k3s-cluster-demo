@@ -127,25 +127,48 @@ curl -sfL https://get.k3s.io | INSTALL_K3S_CHANNEL=stable sh -s - server \
   --tls-san $(hostname -I | awk '{print $1}')
 ```
 
-#### 2. (optional) world-readable kubeconfig for convenience
+#### 2. Verify that node is running
+```bash
+sudo kubectl get nodes
+```
+
+#### 3. Show the join token. You will need this to join the other nodes to the cluster.
+```bash
+sudo cat /var/lib/rancher/k3s/server/node-token
+```
+
+#### 4. Show the IP address of the Control Node. You will also need this for joining other nodes.
+```bash
+hostname -I | awk '{print $1}'
+```
+
+#### 5. (optional) world-readable kubeconfig for convenience
 ```bash
 sudo chmod 644 /etc/rancher/k3s/k3s.yaml
 ```
 >*Don't do this in a production environment. This is for a lab, so it's ok here.*
 
-#### 3. Verify that node is running
+#### 6. (optional) Allow user to run kubectl commands without sudo
+Make a location for user-owned kubeconfig
 ```bash
-sudo kubectl get nodes
+mkdir -p ~/.kube
+```
+Copy the config file
+```bash
+sudo k3s kubectl config view --raw > ~/.kube/config
+```
+Set your user as the owner of the user config
+```bash
+sudo chown "$USER:$USER" ~/.kube/config
+```
+Set permissions on the user config file
+```bash
+chmod 600 ~/.kube/config
 ```
 
-#### 4. Show the join token. You will need this to join the other nodes to the cluster.
+Close your terminal session and start a new one. You should now be able to run `kubectl` without requiring sudo.
 ```bash
-sudo cat /var/lib/rancher/k3s/server/node-token
-```
-
-#### 5. Show the IP address of the Control Node. You will also need this for joining other nodes.
-```bash
-hostname -I | awk '{print $1}'
+kubectl get nodes
 ```
 
 ### 2. Worker/Agent Nodes (`rd-rp31` and `rd-rp52`)
@@ -162,7 +185,7 @@ curl -sfL https://get.k3s.io | \
 
 #### 2. Verify that both Nodes have connected to cluster:
 ```bash
-sudo kubectl get nodes
+kubectl get nodes
 ```
 >*Nodes may take a few seconds to appear on the list*
 
@@ -170,7 +193,7 @@ sudo kubectl get nodes
 
 At this point, you should have a working K3s cluster operating on your nodes. You can verify by going to any node and running:
 ```bash
-sudo kubectl get nodes
+kubectl get nodes
 ```
 
 Example Output from my setup:
