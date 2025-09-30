@@ -43,12 +43,12 @@ ssh <USER>@<CONTROL-NODE-IP-ADDRESS>
 
 2. Pull the 00-simple_pod Manifest from the Github Repo and apply it to the cluster
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/10-simple_pod.yaml
+kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/10-simple_pod.yaml
 ```
 
 3. Verify that the manifest was pulled, and that the pod has started
 ```bash
-sudo kubectl get pods
+kubectl get pods
 
 # Sample Output:
 NAME    READY   STATUS    RESTARTS   AGE
@@ -59,12 +59,12 @@ nginx   1/1     Running   0          2m15s
 
 1. Stop and delete the Nginx Pod
 ```bash
-sudo kubectl delete pod nginx
+kubectl delete pod nginx
 ```
 
 2. Verify the Pod has been removed.
 ```bash
-sudo kubectl get pods
+kubectl get pods
 
 # Example return status
 No resources found in default namespace.
@@ -121,12 +121,12 @@ ssh <USER>@<CONTROL-NODE-IP-ADDRESS>
 
 2. Pull the 11-simple_deployment Manifest from the Github Repo and apply it to the cluster
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/11-simple_deployment.yaml
+kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/11-simple_deployment.yaml
 ```
 
 3. Verify that the manifest was pulled, and that the Deployment has started.
 ```bash
-sudo kubectl get deploy,rs,pods -o wide
+kubectl get deploy,rs,pods -o wide
 
 # Example Output:
 NAME                    READY   UP-TO-DATE   AVAILABLE   AGE     CONTAINERS   IMAGES         SELECTOR
@@ -152,7 +152,7 @@ One of the cool features of Deployments is the self-healing. If a pod was to be 
 
 1. Show currently running Pods
 ```bash
-sudo kubectl get pods
+kubectl get pods
 
 # Example Output with Nginx Deployment
 NAME                   READY   STATUS    RESTARTS   AGE
@@ -163,14 +163,15 @@ nginx-96b9d695-hjk8j   1/1     Running   0          5m
 
 2. Delete the pods
 ```bash
-sudo kubectl delete pod -l app=nginx --wait=false
+kubectl delete pod -l app=nginx --wait=false
 ```
 
 3. Show currently running Pods again
 ```bash
-sudo kubectl get pods
-
-# Example Output: Pod Names and age has changed
+kubectl get pods
+```
+Example Output: Pod Names and age has changed
+```bash
 NAME                   READY   STATUS    RESTARTS   AGE
 nginx-96b9d695-6m49c   1/1     Running   0          7s
 nginx-96b9d695-dvf55   1/1     Running   0          7s
@@ -185,9 +186,11 @@ The final really cool feature of deployments is the ability to scale at a moment
 
 1. Show currently running Pods
 ```bash
-sudo kubectl get pods
+kubectl get pods
+```
 
-# Example Output with Nginx Deployment
+Example Output with Nginx Deployment
+```bash
 NAME                   READY   STATUS    RESTARTS   AGE
 nginx-96b9d695-6m49c   1/1     Running   0          3m28s
 nginx-96b9d695-dvf55   1/1     Running   0          3m28s
@@ -196,14 +199,16 @@ nginx-96b9d695-vnkmv   1/1     Running   0          3m28s
 
 2. Scale the deployment
 ```bash
-sudo kubectl scale deployment/nginx --replicas=4
+kubectl scale deployment/nginx --replicas=4
 ```
 
 3. Show currently running Pods again
 ```bash
-sudo kubectl get pods
+kubectl get pods
+```
 
-# Example Output: Now there are four Pods
+Example Output: Now there are four Pods
+```bash
 nginx-96b9d695-6m49c   1/1     Running   0          3m44s
 nginx-96b9d695-dvf55   1/1     Running   0          3m44s
 nginx-96b9d695-k9s4z   1/1     Running   0          4s
@@ -214,14 +219,15 @@ nginx-96b9d695-vnkmv   1/1     Running   0          3m44s
 
 1. Delete the Deployment
 ```bash
-sudo kubectl delete deployment nginx
+kubectl delete deployment nginx
 ```
 
 2. Verify the Pods have been removed.
 ```bash
-sudo kubectl get pods
-
-# Example return status
+kubectl get pods
+```
+Example return status
+```bash
 No resources found in default namespace.
 ```
 
@@ -286,23 +292,27 @@ ssh <USER>@<CONTROL-NODE-IP-ADDRESS>
 
 #### 2. Pull the 12-simple_deployment_with_service Manifest from the Github Repo and apply it to the cluster
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/12-simple_deployment_with_service.yaml
+kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/12-simple_deployment_with_service.yaml
 ```
 
 #### 3. Verify that the manifest was pulled, and that the Deployment has started.
 ```bash
-sudo kubectl get deploy
+kubectl get deploy
+```
 
-# Example Output:
+Example Output:
+```bash
 NAME    READY   UP-TO-DATE   AVAILABLE   AGE
 nginx   3/3     3            3           2m1s
 ```
 
 #### 4. Verify that the Service is running
 ```bash
-sudo kubectl get svc nginx
+kubectl get svc nginx
+```
 
-# Example Output:
+Example Output:
+```bash
 NAME    TYPE       CLUSTER-IP      EXTERNAL-IP   PORT(S)        AGE
 nginx   NodePort   10.43.136.190   <none>        80:30080/TCP   2m29s
 ```
@@ -320,27 +330,27 @@ curl http://<ANY-NODES-IP-ADDRESS>:30080
 
 #### 1. Delete the Deployment
 ```bash
-sudo kubectl delete deployment nginx
+kubectl delete deployment nginx
 ```
 
 #### 2. Delete the Service
 ```bash
-sudo kubectl delete service nginx
+kubectl delete service nginx
 ```
 
 #### 3. Verify the Pods have been removed.
 ```bash
-sudo kubectl get pods
+kubectl get pods
+```
 
-# Example return status
+Example return status
+```bash
 No resources found in default namespace.
 ```
 
 #### 4. Verify the Service has been removed.
 ```bash
-sudo kubectl get services | grep nginx
-
-# Should return nothing
+kubectl get services | grep nginx # Should return nothing
 ```
 
 ## Conclusion
