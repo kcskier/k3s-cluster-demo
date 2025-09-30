@@ -30,14 +30,14 @@ The difference between ConfigMaps and Secrets are how the Cluster stores them.
 
 You can define Secrets and ConfigMaps in files, but for our example we'll just directly apply them to the Cluster:
 
+Apply a ConfigMap
 ```bash
-# Apply a ConfigMap
-sudo kubectl create configmap demo4-config --from-literal=WELCOME_MESSAGE="Hello from ConfigMap!" 
+kubectl create configmap demo4-config --from-literal=WELCOME_MESSAGE="Hello from ConfigMap!" 
 ```
 
+Apply a Secret
 ```bash
-# Apply a Secret
-sudo kubectl create secret generic demo4-secret --from-literal=DB_PASSWORD="Its_a_Secret!!!"
+kubectl create secret generic demo4-secret --from-literal=DB_PASSWORD="Its_a_Secret!!!"
 ```
 
 Creating `ConfigMaps` and `Secrets` are helpful when you want to add variables and keep them separate from your code. These values are stored in the Cluster, which is generally a more secure way to store them. `Secrets` take it a step further by encrypting the value.
@@ -85,14 +85,12 @@ spec:
 #### 3. Apply the Deployment to the Cluster
 
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/40-configmaps-secrets.yaml
+kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/40-configmaps-secrets.yaml
 ```
 
 #### 4. Verify the deployment has started
 ```bash
-sudo kubectl get pods -o wide
-
-# Should show one pod with status "RUNNING"
+kubectl get pods -o wide # Should show one pod with status "RUNNING"
 ```
 
 ## 2. Print the values from inside the container
@@ -102,13 +100,12 @@ Now we need to enter the Pod and confirm that it can get the variable and secret
 The following is a quick bash script that will locate the pod and print the values.
 
 ```bash
-POD=$(sudo kubectl get pod -l app=nginx -o jsonpath='{.items[0].metadata.name}') &&
-
-sudo kubectl exec -it "$POD" -- /bin/sh -lc 'echo "WELCOME_MESSAGE=$WELCOME_MESSAGE"; echo "DB_PASSWORD=$DB_PASSWORD"'
+POD=$(kubectl get pod -l app=nginx -o jsonpath='{.items[0].metadata.name}') &&
+kubectl exec -it "$POD" -- /bin/sh -lc 'echo "WELCOME_MESSAGE=$WELCOME_MESSAGE"; echo "DB_PASSWORD=$DB_PASSWORD"'
 ```
 
+Example output
 ```bash
-# Example output
 WELCOME_MESSAGE=Hello from ConfigMap!
 DB_PASSWORD=Its_a_Secret!!!
 ```
@@ -117,17 +114,17 @@ DB_PASSWORD=Its_a_Secret!!!
 
 #### 1. Delete the Deployment
 ```bash
-sudo kubectl delete deployment nginx
+kubectl delete deployment nginx
 ```
 
 #### 2. Delete the ConfigMap
 ```bash
-sudo kubectl delete configmap demo4-config
+kubectl delete configmap demo4-config
 ```
 
 #### 3. Delete the Secret
 ```bash
-sudo kubectl delete secret demo4-secret
+kubectl delete secret demo4-secret
 ```
 
 ## Conclusion
