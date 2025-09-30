@@ -84,13 +84,13 @@ spec:
 #### 1. Apply the Manifest to the Cluster
 
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/30-ingress_example.yaml
+kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/30-ingress_example.yaml
 ```
 
 #### 2. Edit the hosts file on Control Node. (`rd-rp51` in my case) Open `/etc/hosts`:
 
 ```bash
-sudo nano /etc/hosts
+nano /etc/hosts
 ```
 
 And add the following line:
@@ -142,25 +142,25 @@ Commercial support is available at
 
 #### 1. Delete the Ingress
 ```bash
-sudo kubectl delete ingress nginx-ingress
+kubectl delete ingress nginx-ingress
 ```
 
 #### 2. Delete the Service
 ```bash
-sudo kubectl delete service nginx
+kubectl delete service nginx
 ```
 
 #### 3. Delete the Deployment
 ```bash
-sudo kubectl delete deployment nginx
+kubectl delete deployment nginx
 ```
 
 #### 4. Verify that all was deleted from cluster
 ```bash
-sudo kubectl get pods &&
-sudo kubectl get ingress &&
-sudo kubectl get deployment &&
-sudo kubectl get service
+kubectl get pods &&
+kubectl get ingress &&
+kubectl get deployment &&
+kubectl get service
 ```
 
 Example Output:
@@ -175,7 +175,7 @@ No resources found in default namespace.
 Remove the line you added to the `/etc/hosts` file
 
 ```bash
-sudo nano /etc/hosts
+nano /etc/hosts
 ```
 
 Example Output:
