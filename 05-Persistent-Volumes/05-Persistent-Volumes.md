@@ -79,12 +79,12 @@ spec:
 ## Apply Manifest to the Cluster
 1. First, apply the manifest to the Cluster:
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/50-persistent-volume.yaml
+kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/50-persistent-volume.yaml
 ```
 
 2. Verify that the PVC is Bound:
 ```bash
-sudo kubectl get pvc demo5-pvc
+kubectl get pvc demo5-pvc
 ```
 
 Example Output:
@@ -97,7 +97,7 @@ demo5-pvc   Bound    pvc-a4e97e26-4f09-4d89-aea5-58a5b6283f2b   1Gi        RWO  
 
 3. Verify that the PV Exists:
 ```bash
-sudo kubectl get pv
+kubectl get pv
 ```
 
 Example Output:
@@ -109,7 +109,7 @@ pvc-a4e97e26-4f09-4d89-aea5-58a5b6283f2b   1Gi        RWO            Delete     
 
 4. Verify the Pod is running:
 ```bash
-sudo kubectl get pods
+kubectl get pods
 ```
 
 Example Output:
@@ -121,7 +121,7 @@ nginx-5d44fb9c8b-727cc   1/1     Running   0          7m23s
 ## Port Forward the Pod
 1. Run the following to port forward the Pod:
 ```bash
-sudo kubectl port-forward deploy/nginx 8080:80
+kubectl port-forward deploy/nginx 8080:80
 ```
 
 2. Open a new terminal to the control node, and run `curl`:
@@ -142,12 +142,12 @@ Now that we can see the persistent volume working, we will attempt to delete the
 1. Delete the Pod:
 > See [Demo 1](../01-demo-basics/01-demo-basics.md#self-healing) for more about self-healing in deployments.
 ```bash
-sudo kubectl delete pod -l app=nginx
+kubectl delete pod -l app=nginx
 ```
 
 2. Restart the Port Forwarding:
 ```bash
-sudo kubectl port-forward deploy/nginx 8080:80
+kubectl port-forward deploy/nginx 8080:80
 ```
 
 3. In a second terminal session to the control node, and run `curl` again:
@@ -167,7 +167,7 @@ Example Output:
 
 1. Delete the Deployment
 ```bash
-sudo kubectl delete deploy nginx
+kubectl delete deploy nginx
 ```
 
 2. Delete the Service
@@ -177,12 +177,12 @@ kubectl delete service nginx-persistent
 
 3. Delete the Claim
 ```bash
-sudo kubectl delete pvc demo5-pvc
+kubectl delete pvc demo5-pvc
 ```
 
 4. Verify that everything is gone.
 ```bash
-sudo kubectl get deploy,pod,pvc,pv # Should return "No resources found"
+kubectl get deploy,pod,pvc,pv # Should return "No resources found"
 ```
 > *Note* - This may take a few minutes to apply.
 
