@@ -42,22 +42,22 @@ By themselves, labels don’t change behavior. The power comes from how selector
 Label everything by Raspberry Pi Model.
 For `rd-rp51`:
 ```bash
-sudo kubectl label node rd-rp51 hardware=pi5
+kubectl label node rd-rp51 hardware=pi5
 ```
 
 For `rd-rp52`:
 ```bash
-sudo kubectl label node rd-rp52 hardware=pi5
+kubectl label node rd-rp52 hardware=pi5
 ```
 
 For `rd-rp31`:
 ```bash
-sudo kubectl label node rd-rp31 hardware=pi3
+kubectl label node rd-rp31 hardware=pi3
 ```
 
 2. Verify Labels
 ```bash
-sudo kubectl get nodes --show-labels | grep hardware
+kubectl get nodes --show-labels | grep hardware
 ```
 
 Notice that Kubernetes has already applied a number of default labels to each node. We can see our custom `hardware` label has been added to this list:
@@ -110,12 +110,12 @@ ssh <USER>@<CONTROL-NODE-IP-ADDRESS>
 
 2. Pull the 20-nodeSelector_with_labels Manifest from the Github Repo and apply it to the cluster
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/20-nodeSelector_with_labels.yaml
+kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/20-nodeSelector_with_labels.yaml
 ```
 
 3. Verify that the manifest was pulled, and that the pod has started
 ```bash
-sudo kubectl get pods -o wide
+kubectl get pods -o wide
 ```
 
 Example Output:
@@ -132,12 +132,12 @@ In this output, notice that there are no Pods on rd-rp31. This is because of the
 
 1. Stop and delete the Nginx Deployment
 ```bash
-sudo kubectl delete deployment nginx
+kubectl delete deployment nginx
 ```
 
 2. Verify the Pods have been removed
 ```bash
-sudo kubectl get pods
+kubectl get pods
 ```
 Example Output:
 ```bash
@@ -148,17 +148,17 @@ No resources found in default namespace.
 
 For `rd-rp51`:
 ```bash
-sudo kubectl label node rd-rp51 hardware-
+kubectl label node rd-rp51 hardware-
 ```
 
 For `rd-rp52`:
 ```bash
-sudo kubectl label node rd-rp52 hardware-
+kubectl label node rd-rp52 hardware-
 ```
 
 For `rd-rp31`:
 ```bash
-sudo kubectl label node rd-rp31 hardware-
+kubectl label node rd-rp31 hardware-
 ```
 ### Labels Summary
 
@@ -170,13 +170,13 @@ In the last two sections, we demonstrated how to use labels and nodeSelectors to
 
 #### A common use case with K8s is to taint the control node(s). In our setup, we will use the following command to taint the `rd-rp51` node.
 ```bash
-sudo kubectl taint nodes rd-rp51 dedicated=control:NoSchedule
+kubectl taint nodes rd-rp51 dedicated=control:NoSchedule
 ```
 
 #### Verify the taint applied using the following commands:
 View taints on `rd-rp51`:
 ```bash
-sudo kubectl describe node rd-rp51 | grep Taints
+kubectl describe node rd-rp51 | grep Taints
 ```
 
 Example Output:
@@ -188,12 +188,12 @@ Tainting Nodes forces Pods to have to "opt-in" in order to be scheduled on a tai
 
 #### Pull the 11-simple_deployment Manifest from demo 1 and apply it to the cluster
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/11-simple_deployment.yaml
+kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/11-simple_deployment.yaml
 ```
 
 #### Verify the Pods
 ```bash
-sudo kubectl get pods -o wide
+kubectl get pods -o wide
 ```
 
 Example Output:
@@ -208,7 +208,7 @@ Notice that there are no Pods running on `rd-rp51`. This is common practice in p
 
 #### Delete the Deployment
 ```bash
-sudo kubectl delete deployment nginx
+kubectl delete deployment nginx
 ```
 
 ### Adding Tolerations
@@ -248,12 +248,12 @@ spec:
 
 #### Pull the 22-nodeSelector_with_tolerations Manifest from the Github Repo and apply it to the cluster:
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/21-nodeSelector_with_tolerations.yaml
+kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/21-nodeSelector_with_tolerations.yaml
 ```
 
 #### Verify the Pods
 ```bash
-sudo kubectl get pods -o wide
+kubectl get pods -o wide
 ```
 
 Example Output:
@@ -270,12 +270,12 @@ As you can see, the deployment can schedule Pods on `rd-rp51`, despite it being 
 
 #### Delete the Deployment:
 ```bash
-sudo kubectl delete deployment nginx
+kubectl delete deployment nginx
 ```
 
 #### Remove the taints from the nodes so they return to normal:
 ```bash
-sudo kubectl taint nodes rd-rp51 dedicated=control:NoSchedule-
+kubectl taint nodes rd-rp51 dedicated=control:NoSchedule-
 ```
 
 ### Taints and Tolerations Summary
@@ -342,27 +342,27 @@ This new `affinity` section has two parts:
 Label everything by Raspberry Pi Model.
 For `rd-rp51`:
 ```bash
-sudo kubectl label node rd-rp51 hardware=pi5
+kubectl label node rd-rp51 hardware=pi5
 ```
 
 For `rd-rp52`:
 ```bash
-sudo kubectl label node rd-rp52 hardware=pi5
+kubectl label node rd-rp52 hardware=pi5
 ```
 
 For `rd-rp31`:
 ```bash
-sudo kubectl label node rd-rp31 hardware=pi3
+kubectl label node rd-rp31 hardware=pi3
 ```
 
 #### Pull the 22-affinity_and_anti_affinity Manifest from the Github Repo and apply it to the cluster
 ```bash
-sudo kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/22-affinity_and_anti_affinity.yaml
+kubectl apply -f https://raw.githubusercontent.com/kcskier/k3s-cluster-demo/main/manifests/demo/22-affinity_and_anti_affinity.yaml
 ```
 
 #### Verify that the manifest was pulled, and that the pod has started
 ```bash
-sudo kubectl get pods -o wide
+kubectl get pods -o wide
 ```
 
 Example Output:
@@ -379,12 +379,12 @@ As we can see, the Pods were applied to all the Nodes in the cluster because the
 
 #### Delete the Deployment
 ```bash
-sudo kubectl delete deployment nginx
+kubectl delete deployment nginx
 ```
 
 #### Verify that the Pods have been removed
 ```bash
-sudo kubectl get pods
+kubectl get pods
 ```
 Example Output:
 ```bash
@@ -394,17 +394,17 @@ No resources found in default namespace.
 #### Remove labels from each Node
 For `rd-rp51`:
 ```bash
-sudo kubectl label node rd-rp51 hardware-
+kubectl label node rd-rp51 hardware-
 ```
 
 For `rd-rp52`:
 ```bash
-sudo kubectl label node rd-rp52 hardware-
+kubectl label node rd-rp52 hardware-
 ```
 
 For `rd-rp31`:
 ```bash
-sudo kubectl label node rd-rp31 hardware-
+kubectl label node rd-rp31 hardware-
 ```
 
 ### Affinity Summary
