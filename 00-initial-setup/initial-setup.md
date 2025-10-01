@@ -163,7 +163,7 @@ sudo chown "$USER:$USER" ~/.kube/config
 ```
 Set permissions on the user config file
 ```bash
-chmod 600 ~/.kube/config
+sudo chmod 600 ~/.kube/config
 ```
 
 Close your terminal session and start a new one. You should now be able to run `kubectl` without requiring sudo.
