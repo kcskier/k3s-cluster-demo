@@ -1,15 +1,15 @@
 # Demo 7 - Helm and Kubernetes Package Managers
 
-In this demo, you will learn how to use **Helm**. If you're familiar with `apt`, `snap`, or `yum`, Helm attepts to solve the same problem, but for Kubernetes clusters.
+In this demo, you will learn how to use **Helm**. If you're familiar with `apt`, `snap`, or `yum`, Helm attempts to solve the same problem, but for Kubernetes clusters.
 
-Helm simplifies installing, upgrading, and removing applications by providing packages of manifests and configuration into reusable charts. In this demo, we will install Helm, add a public chart repository, deploy an NGINX web server, and access it externally using a NodePort.
+Helm simplifies installing, upgrading, and removing applications by providing packages of manifests and configuration into reusable charts. In this demo, we will install Helm, add a public chart repository, deploy an Nginx web server, and access it externally using a NodePort.
 
 ## Learning Goals
 
 - Understand what Helm is and how to use it.
-- Install Helm on the cluster
-- Deploy and manage an application using Helm
-- Access the application from your desktop via NodePort 
+- Install Helm on the cluster.
+- Deploy and manage an application using Helm.
+- Access the application from your desktop via NodePort.
 
 ## Prerequisites
 
@@ -28,14 +28,14 @@ Verify that Helm is installed:
 helm version
 ```
 
-(Optional) Setup helm autocompletion:
+(Optional) Set up helm autocompletion:
 ```bash
 helm completion bash | sudo tee /etc/bash_completion.d/helm >/dev/null
 ```
 
 ## 2. Add a Chart Repository
 
-Helm uses `charts` which are available via Helm `repositories`. For our example, we'll use Bitnami's Nginx chart.
+Helm uses `charts` from Helm `repositories`. For our example, we'll use Bitnami's Nginx chart.
 
 To do that, we need to add the Bitnami repository to Helm:
 ```bash
@@ -59,12 +59,12 @@ Now we will install the Nginx chart from the repository:
 helm install web bitnami/nginx --set service.type=NodePort
 ```
 
-Verify the deployment. You can list the helm deployment with:
+Verify the deployment. You can list the Helm deployment with:
 ```bash
 helm list
 ```
 
-You can also use the usual commands to see the pods and service. Run the following, taking note of the port number.
+You can also use the usual commands to see the Pods and Services. Run the following, taking note of the port number.
 ```bash
 kubectl get pods,svc
 ```
@@ -80,21 +80,21 @@ http://<NODE_IP_ADDRESS>:<PORT>
 
 ### Status
 
-Something else we can do is provide the status for your chart. Run the following to view helpful status information and recommendations about our Nginx deployment:
+You can view the status of your chart, which provides helpful information and recommendations, by running:
 ```bash
 helm status web
 ```
 
 ### History
 
-You can also see a history of the revisions of our Nginx deployment. Run the following to see version history: (There will only be one entry)
+You can also view the revision history of our Nginx deployment. Run the following to see it: (There will only be one entry)
 ```bash
 helm history web
 ```
 
 ### Scaling
 
-We can also scale the deployment using Helm.
+We can also scale the Deployment using Helm.
 
 First, show the current number of Pods:
 ```bash
@@ -113,7 +113,7 @@ kubectl get deploy,pods # Now there are two
 
 ## Cleanup
 
-Cleanup is simply a single command:
+Cleanup is a single command:
 ```bash
 helm uninstall web
 ```
@@ -128,8 +128,8 @@ helm list # Should return an empty list
 In this demo, you installed Helm, added a Helm repository, and deployed a chart. Unlike previous demos where we had to make manifests ourselves, Helm simplifies deployments and bundles pre-made manifests and configurations into versioned packages.
 
 - **Helm** is the package manager for Kubernetes.
-- **Charts** bundle manifests and configuration in versioned packages.
+- **Charts** bundle manifests and configurations in versioned packages.
 - **Repositories** host pre-built charts for common apps.
-- Basic `helm` commands like `install`, `upgrade`, `status`,  and `uninstall` simplify deployment management and lifecycle.
+- Basic `helm` commands like `install`, `upgrade`, `status`, and `uninstall` simplify deployment management and lifecycle.
 
 [**Click here to return to the Demos**](../README.md#demos)
