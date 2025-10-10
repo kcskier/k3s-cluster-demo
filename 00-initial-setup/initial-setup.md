@@ -142,31 +142,36 @@ sudo cat /var/lib/rancher/k3s/server/node-token
 hostname -I | awk '{print $1}'
 ```
 
-#### 5. (optional) world-readable kubeconfig for convenience
-```bash
-sudo chmod 644 /etc/rancher/k3s/k3s.yaml
-```
->*Don't do this in a production environment. This is for a lab, so it's ok here.*
+#### 5. (optional) Allow user to run kubectl commands without sudo
 
-#### 6. (optional) Allow user to run kubectl commands without sudo
-Make a location for user-owned kubeconfig
+Create kubeconfig directory
 ```bash
 mkdir -p ~/.kube
 ```
-Copy the config file
+
+Copy the root-owned kubeconfig to your user
 ```bash
-sudo k3s kubectl config view --raw > ~/.kube/config
+sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
 ```
-Set your user as the owner of the user config
+
+Make it yours & lock it down
 ```bash
-sudo chown "$USER:$USER" ~/.kube/config
-```
-Set permissions on the user config file
-```bash
+sudo chown "$USER:$USER" ~/.kube/config &&
 sudo chmod 600 ~/.kube/config
 ```
 
-Close your terminal session and start a new one. You should now be able to run `kubectl` without requiring sudo.
+Make your shell use this config (current shell)
+```bash
+export KUBECONFIG="$HOME/.kube/config"
+```
+
+Persist for future shells
+```bash
+echo 'export KUBECONFIG="$HOME/.kube/config"' >> ~/.bashrc &&
+exec $SHELL -l
+```
+
+You should now be able to run `kubectl` without requiring sudo. Test by running a `kubectl` command:
 ```bash
 kubectl get nodes
 ```
