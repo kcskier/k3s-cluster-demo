@@ -25,3 +25,4 @@ After completing the Initial Setup, pick any of the following demos.
 - [**Demo 4 - ConfigMaps and Secrets**](./04-configmaps-and-secrets/04-configmaps_and_secrets.md): Show how to pass configuration and sensitive data to Deployments.
 - [**Demo 5 - Persistent Volumes**](./05-Persistent-Volumes/05-Persistent-Volumes.md): Create persistent volumes to be used by Pods.
 - [**Demo 6 - Probes, Rolling Updates and Rollbacks**](./06-Updates-and-Probes/06-Updates-and-Probes.md): Create Pod health checks, apply rolling updates and practice rollbacks.
+- [**Demo 7 - Using Helm**](./07-helm/07-helm.md): Understand package managers for K8s, and learn how to use Helm.
