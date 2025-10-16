@@ -144,28 +144,28 @@ hostname -I | awk '{print $1}'
 
 #### 5. (optional) Allow user to run kubectl commands without sudo
 
-Create kubeconfig directory
+Create kubeconfig directory:
 ```bash
 mkdir -p ~/.kube
 ```
 
-Copy the root-owned kubeconfig to your user
+Copy the root-owned kubeconfig to your user:
 ```bash
 sudo cp /etc/rancher/k3s/k3s.yaml ~/.kube/config
 ```
 
-Make it yours & lock it down
+Set ownership:
 ```bash
 sudo chown "$USER:$USER" ~/.kube/config &&
 sudo chmod 600 ~/.kube/config
 ```
 
-Make your shell use this config (current shell)
+Make your current shell use this config:
 ```bash
 export KUBECONFIG="$HOME/.kube/config"
 ```
 
-Persist for future shells
+Persist for future shells:
 ```bash
 echo 'export KUBECONFIG="$HOME/.kube/config"' >> ~/.bashrc &&
 exec $SHELL -l
